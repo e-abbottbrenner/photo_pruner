@@ -1,6 +1,8 @@
 #include "ProjectImage.h"
 
 #include <cassert>
+#include <QJsonArray>
+#include <QStringList>
 
 const QString ProjectImage::JsonKeys::IMAGE_PATH = "image-path";
 const QString ProjectImage::JsonKeys::TAGS = "tags";
@@ -106,7 +108,25 @@ QString ProjectImage::getImagePath() const
  */
 QJsonObject ProjectImage::toJsonObject() const
 {
-    return QJsonObject();
+    QJsonArray tags;
+
+    QStringList tagList = imageTags.toList();
+    // sort the list  so they always come out to the json array in the same order
+    // this is necessary for testing equality of json objects
+    tagList.sort();
+
+    foreach(QString tag, tagList)
+    {// convert the set to a json array
+        tags.append(tag);
+    }
+
+    QJsonObject object;
+
+    object.insert(JsonKeys::IMAGE_PATH, imagePath);
+    object.insert(JsonKeys::TAGS, tags);
+    object.insert(JsonKeys::WILL_BE_PRUNED, willBePruned);
+
+    return object;
 }
 
 /*!
@@ -114,9 +134,21 @@ QJsonObject ProjectImage::toJsonObject() const
  * \param obj
  * \return
  */
-ProjectImage *ProjectImage::fromJsonObject(const QJsonObject &obj)
+ProjectImagePtr ProjectImage::fromJsonObject(const QJsonObject &obj)
 {
-    return NULL;
+    QString imageName(obj.value(JsonKeys::IMAGE_PATH).toString());
+
+    ProjectImagePtr projectImage(new ProjectImage(imageName));
+
+    foreach(QJsonValue value, obj.value(JsonKeys::TAGS).toArray())
+    {
+        // bypass the signal from the add method
+        projectImage->imageTags.insert(value.toString());
+    }
+
+    projectImage->willBePruned = obj.value(JsonKeys::WILL_BE_PRUNED).toBool();
+
+    return projectImage;
 }
 
 bool ProjectImage::equals(ProjectImagePtr other) const

@@ -32,7 +32,7 @@ public:
     QString getImagePath() const;
 
     QJsonObject toJsonObject() const;
-    static ProjectImage* fromJsonObject(const QJsonObject& obj);
+    static ProjectImagePtr fromJsonObject(const QJsonObject& obj);
 
     class JsonKeys
     {

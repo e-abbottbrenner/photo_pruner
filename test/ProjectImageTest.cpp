@@ -96,8 +96,9 @@ protected:
     {
         ProjectImageTest::SetUp();
 
-        QString tag1 = "bleh";
-        QString tag2 = "blah";
+        // make sure these are sorted
+        QString tag1 = "blah";
+        QString tag2 = "bleh";
 
         projectImage->addImageTag(tag1);
         projectImage->addImageTag(tag2);
