@@ -1,12 +1,13 @@
 QT += gui widgets
 
-SOURCES += \
-    main.cpp \
-    PrunerWindow.cpp \
-    PruningProject.cpp \
-    ProjectImage.cpp
+include(src/src.pri)
 
-HEADERS += \
-    PrunerWindow.h \
-    PruningProject.h \
-    ProjectImage.h
+INCLUDEPATH += $$PWD/include
+
+LIBS += -L$$PWD/lib
+
+test {
+  LIBS += -lgtestd -lgtest_main-mdd
+
+  include(test/test.pri)
+}
