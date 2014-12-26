@@ -2,6 +2,7 @@
 
 #include "ProjectImage.h"
 
+#include <QJsonDocument>
 #include <QSignalSpy>
 
 class ProjectImageTest : public ::testing::Test
@@ -86,4 +87,45 @@ TEST_F(ProjectImageTest, testWillBePruned)
     EXPECT_FALSE(projectImage->getWillBePruned());
 
     ASSERT_EQ(2, prunedSpy.size());
+}
+
+class ProjectImageJsonTest : public ProjectImageTest
+{
+protected:
+    virtual void SetUp()
+    {
+        ProjectImageTest::SetUp();
+
+        QString tag1 = "bleh";
+        QString tag2 = "blah";
+
+        projectImage->addImageTag(tag1);
+        projectImage->addImageTag(tag2);
+
+        QString jsonString = QString("{ \"%1\":\"%2\", \"%3\": [ \"%4\", \"%5\" ], \"%6\": %7 }")
+                .arg(ProjectImage::JsonKeys::IMAGE_PATH, path,
+                     ProjectImage::JsonKeys::TAGS, tag1, tag2,
+                     ProjectImage::JsonKeys::WILL_BE_PRUNED, "false");
+
+        jsonObject = QJsonDocument::fromJson(jsonString.toUtf8()).object();
+    }
+
+    virtual void TearDown()
+    {
+        ProjectImageTest::TearDown();
+    }
+
+    QJsonObject jsonObject;
+};
+
+TEST_F(ProjectImageJsonTest, testToJson)
+{
+    EXPECT_EQ(jsonObject, projectImage->toJsonObject());
+}
+
+TEST_F(ProjectImageJsonTest, testFromJson)
+{
+    ProjectImagePtr fromJson(ProjectImage::fromJsonObject(jsonObject));
+
+    EXPECT_TRUE(projectImage->equals(fromJson));
 }
