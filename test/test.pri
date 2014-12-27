@@ -9,4 +9,5 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/GoogleTest.h \
-    $$PWD/PrintHelpers.h
+    $$PWD/PrintHelpers.h \
+    $$PWD/ResourcePath.h

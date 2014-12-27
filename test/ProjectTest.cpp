@@ -1,10 +1,13 @@
 #include "GoogleTest.h"
 
+#include "ResourcePath.h"
 #include "Project.h"
 #include "ProjectImage.h"
 
+#include <QDir>
 #include <QSignalSpy>
 #include <QStringList>
+#include <QTemporaryDir>
 
 class ProjectTest : public ::testing::Test
 {
@@ -122,3 +125,38 @@ TEST_F(ProjectTest, testEquals)
     EXPECT_FALSE(project->equals(otherProject));
 }
 
+TEST_F(ProjectTest, testPruneProject)
+{
+    QTemporaryDir tempDir("PhotoPrunerTest");
+
+    QString streamPath = tempDir.path() + "/stream.jpg";
+    QString sunsetPath = tempDir.path() + "/sunset.jpg";
+
+    QFile::copy(RESOURCE_PATH + "/images/stream.jpg", streamPath);
+    QFile::copy(RESOURCE_PATH + "/images/sunset.jpg", sunsetPath);
+
+    project->addProjectImage(streamPath);
+    project->addProjectImage(sunsetPath);
+
+    ProjectImagePtr imageToPrune = project->getImage(sunsetPath);
+    imageToPrune->setWillBePruned(true);
+
+    EXPECT_TRUE(QFileInfo(streamPath).exists());
+    EXPECT_TRUE(QFileInfo(sunsetPath).exists());
+
+    ProjectUtils::pruneProject(project);
+
+    EXPECT_TRUE(QFileInfo(streamPath).exists());
+    EXPECT_FALSE(QFileInfo(sunsetPath).exists());
+}
+
+
+TEST_F(ProjectTest, testToJsonObject)
+{
+
+}
+
+TEST_F(ProjectTest, testFromJsonObject)
+{
+
+}

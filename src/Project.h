@@ -26,6 +26,15 @@ public:
     void addProjectImage(const QString& imagePath);
     void removeProjectImage(const QString& imagePath);
 
+    QJsonObject toJsonObject() const;
+    static ProjectPtr fromJsonObject(const QJsonObject& object);
+
+    class JsonKeys
+    {
+    public:
+        static const QString IMAGES = "images";
+    };
+
 signals:
     void imageAdded(const QString& image);
     void imageRemoved(const QString& image);
@@ -40,6 +49,7 @@ private:
 namespace ProjectUtils
 {
     extern void addImagesToProject(ProjectPtr project, const QStringList& imagePaths);
+    extern void pruneProject(ProjectPtr project);
 }
 
 #endif // PROJECT_H

@@ -4,7 +4,11 @@
 
 #include <cassert>
 
+#include <QFile>
+#include <QFileInfo>
 #include <QStringList>
+
+const QString Project::JsonKeys::IMAGES = "images";
 
 /*!
  * \brief Project::createProject creates a pruning project
@@ -83,6 +87,25 @@ void Project::removeProjectImage(const QString &imagePath)
     }
 }
 
+/*!
+ * \brief Project::toJsonObject
+ * \return
+ */
+QJsonObject Project::toJsonObject() const
+{
+
+}
+
+/*!
+ * \brief Project::fromJsonObject
+ * \param object
+ * \return
+ */
+ProjectPtr Project::fromJsonObject(const QJsonObject& object)
+{
+
+}
+
 Project::Project()
 {
 
@@ -100,6 +123,30 @@ namespace ProjectUtils
         foreach(QString imagePath, imagePaths)
         {// add new images to the project
             project->addProjectImage(imagePath);
+        }
+    }
+
+    /*!
+     * \brief pruneProject prunes the unwanted photos from the project
+     * \param project
+     */
+    void pruneProject(ProjectPtr project)
+    {
+        QList<ProjectImagePtr> projectImages = project->getProjectImages();
+
+        foreach(ProjectImagePtr image, projectImages)
+        {
+            if(image->getWillBePruned())
+            {
+                assert(QFileInfo(image->getImagePath()).exists());
+
+                bool removed = QFile(image->getImagePath()).remove();
+
+                if(removed)
+                {
+                    project->removeProjectImage(image->getImagePath());
+                }
+            }
         }
     }
 }
