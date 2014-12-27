@@ -11,7 +11,6 @@
 #include <QSignalSpy>
 #include <QStringList>
 #include <QTemporaryDir>
-#include <QTemporaryFile>
 
 class ProjectTest : public ::testing::Test
 {
@@ -198,4 +197,31 @@ TEST_F(ProjectJsonTest, testFromJsonObject)
     ProjectPtr fromJson = Project::fromJsonObject(jsonObject);
 
     EXPECT_TRUE(project->equals(fromJson));
+}
+
+TEST_F(ProjectJsonTest, testLoadFromFile)
+{
+    QString filePath(RESOURCE_PATH + "/projects/sampleproj.json");
+
+    ASSERT_TRUE(QFileInfo(filePath).exists()) << filePath;
+
+    ProjectPtr fromFile = ProjectUtils::loadFromFile(filePath);
+
+    EXPECT_TRUE(project->equals(fromFile));
+}
+
+TEST_F(ProjectJsonTest, testSaveToFile)
+{
+    QTemporaryDir tempDir("ProjectJsonSavefile");
+
+    QString path = QDir(tempDir.path()).absoluteFilePath("test.json");
+
+    ProjectUtils::saveToFile(project, path);
+
+    QFile projectFile(path);
+    projectFile.open(QFile::ReadOnly);
+
+    QJsonDocument document = QJsonDocument::fromJson(projectFile.readAll());
+
+    EXPECT_EQ(jsonObject, document.object());
 }

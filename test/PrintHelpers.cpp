@@ -15,3 +15,8 @@ extern void PrintTo(const QJsonObject &object, std::ostream *os)
     document.setObject(object);
     *os << document.toJson().toStdString();
 }
+
+extern ::std::ostream&operator<<(std::ostream& os, const QString& string)
+{
+    return os << string.toStdString();
+}

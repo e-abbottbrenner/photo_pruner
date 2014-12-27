@@ -5,7 +5,9 @@
 #include <cassert>
 
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
+#include <QSaveFile>
 #include <QFile>
 #include <QFileInfo>
 #include <QStringList>
@@ -177,5 +179,43 @@ namespace ProjectUtils
                 }
             }
         }
+    }
+
+    /*!
+     * \brief saveToFile saves the document to the file
+     * \param project
+     * \param projectPath
+     */
+    void saveToFile(ProjectPtr project, const QString& projectPath)
+    {
+        QJsonObject projectObject = project->toJsonObject();
+
+        QJsonDocument document;
+        document.setObject(projectObject);
+
+        QSaveFile saveFile(projectPath);
+        // fall back on directly writing the file in case there are permissions issues
+        saveFile.setDirectWriteFallback(true);
+
+        saveFile.open(QSaveFile::WriteOnly);
+
+        saveFile.write(document.toJson());
+
+        saveFile.commit();
+    }
+
+    /*!
+     * \brief loadFromFile loads the project from a file
+     * \param projectPath
+     * \return
+     */
+    ProjectPtr loadFromFile(const QString& projectPath)
+    {
+        QFile loadFile(projectPath);
+        loadFile.open(QFile::ReadOnly);
+
+        QJsonDocument document = QJsonDocument::fromJson(loadFile.readAll());
+
+        return Project::fromJsonObject(document.object());
     }
 }

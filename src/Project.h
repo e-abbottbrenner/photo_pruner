@@ -50,6 +50,8 @@ namespace ProjectUtils
 {
     extern void addImagesToProject(ProjectPtr project, const QStringList& imagePaths);
     extern void pruneProject(ProjectPtr project);
+    extern void saveToFile(ProjectPtr project, const QString& projectPath);
+    extern ProjectPtr loadFromFile(const QString& projectPath);
 }
 
 #endif // PROJECT_H
