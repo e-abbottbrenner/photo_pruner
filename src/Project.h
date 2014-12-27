@@ -21,12 +21,14 @@ public:
 
     QList<ProjectImagePtr> getProjectImages() const;
 
-    void addProjectImage(ProjectImagePtr projectImage);
-    void removeProjectImage(ProjectImagePtr projectImage);
+    ProjectImagePtr getImage(const QString& imagePath) const;
+
+    void addProjectImage(const QString& imagePath);
+    void removeProjectImage(const QString& imagePath);
 
 signals:
-    void imageAdded(ProjectImagePtr image);
-    void imageRemoved(ProjectImagePtr image);
+    void imageAdded(const QString& image);
+    void imageRemoved(const QString& image);
 
 private:
     // we use a map so that we have consistent ordering for the items in it

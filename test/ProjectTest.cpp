@@ -28,17 +28,17 @@ TEST_F(ProjectTest, testAddImagesToProject)
     QString imagePath2 = "blah";
     QString imagePath3 = "bleh";
 
-    ProjectImagePtr newImage = ProjectImage::createProjectImage(imagePath1);
+    QSignalSpy addSpy(project.data(), SIGNAL(imageAdded(QString)));
 
-    QSignalSpy addSpy(project.data(), SIGNAL(imageAdded(ProjectImagePtr)));
-
-    project->addProjectImage(newImage);
+    project->addProjectImage(imagePath1);
 
     ASSERT_EQ(1, addSpy.size());
 
     ASSERT_EQ(1, project->getProjectImages().size());
 
-    EXPECT_EQ(newImage, project->getProjectImages().first());
+    EXPECT_EQ(imagePath1, addSpy[0][0].toString());
+
+    EXPECT_EQ(imagePath1, project->getProjectImages().first()->getImagePath());
 
     QStringList images;
     images << imagePath2 << imagePath3;
@@ -53,12 +53,46 @@ TEST_F(ProjectTest, testAddImagesToProject)
     EXPECT_EQ(imagePath2, project->getProjectImages()[1]->getImagePath());
     EXPECT_EQ(imagePath3, project->getProjectImages()[2]->getImagePath());
 
-    ProjectImagePtr oldImage = ProjectImage::createProjectImage(imagePath1);
-
-    project->addProjectImage(oldImage);
+    project->addProjectImage(imagePath1);
 
     // can't add same image twice
     ASSERT_EQ(3, addSpy.size());
+}
+
+TEST_F(ProjectTest, testRemoveImagesFromProject)
+{
+    QString imagePath = "asdf";
+
+    QSignalSpy removeSpy(project.data(), SIGNAL(imageRemoved(QString)));
+
+    project->removeProjectImage(imagePath);
+
+    EXPECT_EQ(0, removeSpy.size());
+
+    project->addProjectImage(imagePath);
+    project->removeProjectImage(imagePath);
+
+    EXPECT_EQ(1, removeSpy.size());
+
+    EXPECT_EQ(imagePath, removeSpy[0][0].toString());
+
+    EXPECT_EQ(0, project->getProjectImages().size());
+}
+
+TEST_F(ProjectTest, testGetProjectImage)
+{
+    QString imagePath = "asdf";
+
+    EXPECT_EQ(ProjectImagePtr(), project->getImage(imagePath));
+
+    project->addProjectImage(imagePath);
+
+    ProjectImagePtr image = project->getImage(imagePath);
+
+    EXPECT_FALSE(image.isNull());
+
+    // always returns same pointer
+    EXPECT_EQ(image, project->getImage(imagePath));
 }
 
 TEST_F(ProjectTest, testEquals)

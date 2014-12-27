@@ -50,35 +50,36 @@ QList<ProjectImagePtr> Project::getProjectImages() const
     return projectImages.values();
 }
 
+ProjectImagePtr Project::getImage(const QString& imagePath) const
+{
+    return projectImages.value(imagePath);
+}
+
 /*!
  * \brief Project::addProjectImage adds an image to the project
- * \param projectImage
+ * \param imagePath
  */
-void Project::addProjectImage(ProjectImagePtr projectImage)
+void Project::addProjectImage(const QString &imagePath)
 {
-    assert(projectImage != NULL);
-
-    if(!projectImages.contains(projectImage->getImagePath()))
+    if(!projectImages.contains(imagePath))
     {
-        projectImages.insert(projectImage->getImagePath(), projectImage);
+        projectImages.insert(imagePath, ProjectImage::createProjectImage(imagePath));
 
-        emit imageAdded(projectImage);
+        emit imageAdded(imagePath);
     }
 }
 
 /*!
- * \brief Project::removeProjectImage adds an image to the project
- * \param projectImage
+ * \brief Project::removeProjectImage removes an iamage from the project
+ * \param imagePath
  */
-void Project::removeProjectImage(ProjectImagePtr projectImage)
+void Project::removeProjectImage(const QString &imagePath)
 {
-    assert(projectImage != NULL);
-
-    if(projectImages.contains(projectImage->getImagePath()))
+    if(projectImages.contains(imagePath))
     {
-        projectImages.remove(projectImage->getImagePath());
+        projectImages.remove(imagePath);
 
-        emit imageRemoved(projectImage);
+        emit imageRemoved(imagePath);
     }
 }
 
@@ -98,7 +99,7 @@ namespace ProjectUtils
     {
         foreach(QString imagePath, imagePaths)
         {// add new images to the project
-            project->addProjectImage(ProjectImage::createProjectImage(imagePath));
+            project->addProjectImage(imagePath);
         }
     }
 }
