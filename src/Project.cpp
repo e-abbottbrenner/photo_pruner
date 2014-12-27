@@ -63,6 +63,24 @@ QList<ProjectImagePtr> Project::getProjectImages() const
     return projectImages.values();
 }
 
+/*!
+ * \brief Project::getProjectImagePaths gets the paths used by project images
+ * \return
+ */
+QStringList Project::getProjectImagePaths() const
+{
+    return projectImages.keys();
+}
+
+/*!
+ * \brief Project::imageCount gets the number of images in the project
+ * \return
+ */
+int Project::imageCount() const
+{
+    return projectImages.size();
+}
+
 ProjectImagePtr Project::getImage(const QString& imagePath) const
 {
     return projectImages.value(imagePath);

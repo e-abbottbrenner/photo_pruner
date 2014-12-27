@@ -21,6 +21,10 @@ public:
 
     QList<ProjectImagePtr> getProjectImages() const;
 
+    QStringList getProjectImagePaths() const;
+
+    int imageCount() const;
+
     ProjectImagePtr getImage(const QString& imagePath) const;
 
     void addProjectImage(const QString& imagePath);

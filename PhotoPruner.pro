@@ -1,6 +1,7 @@
-QT += gui widgets
+QT += gui widgets qml quick
 
 include(src/src.pri)
+include(qml/qml.pri)
 
 INCLUDEPATH += $$PWD/include
 
@@ -13,3 +14,10 @@ test {
 
   include(test/test.pri)
 }
+
+RESOURCES += \
+    resources.qrc
+
+HEADERS +=
+
+SOURCES +=
