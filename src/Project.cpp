@@ -4,6 +4,8 @@
 
 #include <cassert>
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QFile>
 #include <QFileInfo>
 #include <QStringList>
@@ -26,6 +28,11 @@ ProjectPtr Project::createProject()
  */
 bool Project::equals(ProjectPtr other)
 {
+    if(other == NULL)
+    {
+        return false;
+    }
+
     bool imageCountEqual = other->projectImages.size() == projectImages.size();
 
     if(!imageCountEqual)
@@ -93,7 +100,18 @@ void Project::removeProjectImage(const QString &imagePath)
  */
 QJsonObject Project::toJsonObject() const
 {
+    QJsonObject object;
 
+    QJsonArray imagesArray;
+
+    foreach(ProjectImagePtr image, getProjectImages())
+    {// save images out to an array
+        imagesArray.append(image->toJsonObject());
+    }
+
+    object.insert(JsonKeys::IMAGES, imagesArray);
+
+    return object;
 }
 
 /*!
@@ -103,7 +121,18 @@ QJsonObject Project::toJsonObject() const
  */
 ProjectPtr Project::fromJsonObject(const QJsonObject& object)
 {
+    QJsonArray imagesArray = object.value(JsonKeys::IMAGES).toArray();
 
+    ProjectPtr project = createProject();
+
+    foreach(QJsonValue value, imagesArray)
+    {// load images back in
+        ProjectImagePtr image = ProjectImage::fromJsonObject(value.toObject());
+
+        project->projectImages.insert(image->getImagePath(), image);
+    }
+
+    return project;
 }
 
 Project::Project()

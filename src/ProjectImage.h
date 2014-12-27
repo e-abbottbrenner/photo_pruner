@@ -26,8 +26,11 @@ public:
 
     QString getImagePath() const;
 
+    bool equals(ProjectImagePtr other) const;
+
     QJsonObject toJsonObject() const;
     static ProjectImagePtr fromJsonObject(const QJsonObject& obj);
+
 
     class JsonKeys
     {
@@ -36,8 +39,6 @@ public:
         static const QString TAGS;
         static const QString WILL_BE_PRUNED;
     };
-
-    bool equals(ProjectImagePtr other) const;
 
 signals:
     void tagAdded(const QString& imagePath, const QString& tag);

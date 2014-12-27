@@ -32,7 +32,7 @@ public:
     class JsonKeys
     {
     public:
-        static const QString IMAGES = "images";
+        static const QString IMAGES;
     };
 
 signals:

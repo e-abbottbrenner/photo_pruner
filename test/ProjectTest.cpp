@@ -4,10 +4,14 @@
 #include "Project.h"
 #include "ProjectImage.h"
 
+#include <QDebug>
 #include <QDir>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QStringList>
 #include <QTemporaryDir>
+#include <QTemporaryFile>
 
 class ProjectTest : public ::testing::Test
 {
@@ -150,13 +154,48 @@ TEST_F(ProjectTest, testPruneProject)
     EXPECT_FALSE(QFileInfo(sunsetPath).exists());
 }
 
-
-TEST_F(ProjectTest, testToJsonObject)
+class ProjectJsonTest : public ProjectTest
 {
+protected:
+    virtual void SetUp()
+    {
+        ProjectTest::SetUp();
 
+        imagePaths.clear();
+        imagePaths << "blah";
+        imagePaths << "bleh";
+
+        ProjectUtils::addImagesToProject(project, imagePaths);
+
+        QString jsonString = QString("{\"%1\": [ { \"%2\":\"%3\", \"%5\": [ ], \"%6\": %7 }, "
+                                     "{ \"%2\":\"%4\", \"%5\": [ ], \"%6\": %7 } ] }")
+                             .arg(Project::JsonKeys::IMAGES,
+                                  ProjectImage::JsonKeys::IMAGE_PATH,
+                                  imagePaths[0], imagePaths[1],
+                ProjectImage::JsonKeys::TAGS,
+                ProjectImage::JsonKeys::WILL_BE_PRUNED, "false");
+
+        jsonObject = QJsonDocument::fromJson(jsonString.toUtf8()).object();
+    }
+
+    virtual void TearDown()
+    {
+        ProjectTest::TearDown();
+    }
+
+    QStringList imagePaths;
+
+    QJsonObject jsonObject;
+};
+
+TEST_F(ProjectJsonTest, testToJsonObject)
+{
+    EXPECT_EQ(jsonObject, project->toJsonObject());
 }
 
-TEST_F(ProjectTest, testFromJsonObject)
+TEST_F(ProjectJsonTest, testFromJsonObject)
 {
+    ProjectPtr fromJson = Project::fromJsonObject(jsonObject);
 
+    EXPECT_TRUE(project->equals(fromJson));
 }
