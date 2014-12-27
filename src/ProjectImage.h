@@ -4,21 +4,16 @@
 #include <QObject>
 
 #include <QJsonObject>
-#include <QSharedPointer>
-#include <QString>
-#include <QSet>
 
-typedef QSet<QString> StringSet;
-
-class ProjectImage;
-typedef QSharedPointer<ProjectImage> ProjectImagePtr;
+#include "ProjectImagePtr.h"
+#include "StringSet.h"
 
 class ProjectImage : public QObject
 {
     Q_OBJECT
 
 public:
-    ProjectImage(QString imagePath);
+    static ProjectImagePtr createProjectImage(const QString& imagePath);
 
     StringSet getImageTags() const;
 
@@ -43,14 +38,15 @@ public:
     };
 
     bool equals(ProjectImagePtr other) const;
-    bool equals(const ProjectImage *other) const;
 
 signals:
-    void tagAdded(ProjectImage *image, const QString& tag);
-    void tagRemoved(ProjectImage *image, const QString& tag);
-    void willBePrunedChanged(ProjectImage *image, bool willBePruned);
+    void tagAdded(const QString& imagePath, const QString& tag);
+    void tagRemoved(const QString& imagePath, const QString& tag);
+    void willBePrunedChanged(const QString& imagePath, bool willBePruned);
 
 private:
+    ProjectImage(const QString &imagePath);
+
     QString imagePath;
     StringSet imageTags;
     bool willBePruned;

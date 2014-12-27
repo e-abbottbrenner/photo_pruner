@@ -1,7 +1,10 @@
 HEADERS += \
     $$PWD/ProjectImage.h \
     $$PWD/PrunerWindow.h \
-    $$PWD/PruningProject.h
+    $$PWD/ProjectImagePtr.h \
+    $$PWD/StringSet.h \
+    $$PWD/ProjectPtr.h \
+    $$PWD/Project.h
 
     !test {
       $$PWD/main.cpp \
@@ -10,4 +13,4 @@ HEADERS += \
 SOURCES += \
     $$PWD/ProjectImage.cpp \
     $$PWD/PrunerWindow.cpp \
-    $$PWD/PruningProject.cpp
+    $$PWD/Project.cpp

@@ -11,12 +11,38 @@ protected:
     virtual void SetUp()
     {
         path = "/this/is/a/dummy/path.png";
-        projectImage.reset(new ProjectImage(path));
+        projectImage = ProjectImage::createProjectImage(path);
+    }
+
+    virtual void TearDown()
+    {
+        projectImage.clear();
     }
 
     QString path;
     ProjectImagePtr projectImage;
 };
+
+TEST_F(ProjectImageTest, testEquals)
+{
+    ProjectImagePtr otherImage = ProjectImage::createProjectImage(path);
+
+    QString tag("blah");
+
+    EXPECT_TRUE(projectImage->equals(otherImage));
+
+    otherImage->addImageTag(tag);
+    EXPECT_FALSE(projectImage->equals(otherImage));
+
+    otherImage = ProjectImage::createProjectImage(path);
+    otherImage->setWillBePruned(true);
+
+    EXPECT_FALSE(projectImage->equals(otherImage));
+
+    otherImage = ProjectImage::createProjectImage("12345");
+
+    EXPECT_FALSE(projectImage->equals(otherImage));
+}
 
 TEST_F(ProjectImageTest, testGetImagePath)
 {
@@ -28,8 +54,8 @@ TEST_F(ProjectImageTest, testTags)
     QString tag1 = "blah";
     QString tag2 = "bleh";
 
-    QSignalSpy tagAddedSpy(projectImage.data(), SIGNAL(tagAdded(ProjectImage*,QString)));
-    QSignalSpy tagRemovedSpy(projectImage.data(), SIGNAL(tagRemoved(ProjectImage*,QString)));
+    QSignalSpy tagAddedSpy(projectImage.data(), SIGNAL(tagAdded(QString,QString)));
+    QSignalSpy tagRemovedSpy(projectImage.data(), SIGNAL(tagRemoved(QString,QString)));
 
     EXPECT_FALSE(projectImage->hasImageTag(tag1));
     EXPECT_FALSE(projectImage->hasImageTag(tag2));
@@ -39,14 +65,14 @@ TEST_F(ProjectImageTest, testTags)
 
     ASSERT_EQ(1, tagAddedSpy.size());
 
-    EXPECT_EQ(projectImage.data(), tagAddedSpy[tagAddedSpy.size() - 1][0].value<ProjectImage*>());
+    EXPECT_EQ(projectImage->getImagePath(), tagAddedSpy[tagAddedSpy.size() - 1][0].toString());
     EXPECT_EQ(tag1, tagAddedSpy[tagAddedSpy.size() - 1][1].toString());
 
     projectImage->addImageTag(tag2);
 
     ASSERT_EQ(2, tagAddedSpy.size());
 
-    EXPECT_EQ(projectImage.data(), tagAddedSpy[tagAddedSpy.size() - 1][0].value<ProjectImage*>());
+    EXPECT_EQ(projectImage->getImagePath(), tagAddedSpy[tagAddedSpy.size() - 1][0].toString());
     EXPECT_EQ(tag2, tagAddedSpy[tagAddedSpy.size() - 1][1].toString());
 
     EXPECT_TRUE(projectImage->hasImageTag(tag1));
@@ -58,7 +84,7 @@ TEST_F(ProjectImageTest, testTags)
 
     ASSERT_EQ(1, tagRemovedSpy.size());
 
-    EXPECT_EQ(projectImage.data(), tagRemovedSpy[tagRemovedSpy.size() - 1][0].value<ProjectImage*>());
+    EXPECT_EQ(projectImage->getImagePath(), tagRemovedSpy[tagRemovedSpy.size() - 1][0].toString());
     EXPECT_EQ(tag1, tagRemovedSpy[tagRemovedSpy.size() - 1][1].toString());
 
     EXPECT_FALSE(projectImage->hasImageTag(tag1));
@@ -71,7 +97,7 @@ TEST_F(ProjectImageTest, testWillBePruned)
 {
     EXPECT_FALSE(projectImage->getWillBePruned());
 
-    QSignalSpy prunedSpy(projectImage.data(), SIGNAL(willBePrunedChanged(ProjectImage*,bool)));
+    QSignalSpy prunedSpy(projectImage.data(), SIGNAL(willBePrunedChanged(QString,bool)));
 
     projectImage->setWillBePruned(true);
 
@@ -79,7 +105,7 @@ TEST_F(ProjectImageTest, testWillBePruned)
 
     ASSERT_EQ(1, prunedSpy.size());
 
-    EXPECT_EQ(projectImage.data(), prunedSpy[0][0].value<ProjectImage*>());
+    EXPECT_EQ(projectImage->getImagePath(), prunedSpy[0][0].toString());
     EXPECT_EQ(true, prunedSpy[0][1].toBool());
 
     projectImage->setWillBePruned(false);

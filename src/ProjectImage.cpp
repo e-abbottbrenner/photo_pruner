@@ -9,10 +9,20 @@ const QString ProjectImage::JsonKeys::TAGS = "tags";
 const QString ProjectImage::JsonKeys::WILL_BE_PRUNED = "will-be-pruned";
 
 /*!
- * \brief ProjectImage::ProjectImage constructs a project image for the given system file path
+ * \brief ProjectImage::create constructs a project image for the given system file path
+ * \param imagePath
+ * \return
+ */
+ProjectImagePtr ProjectImage::createProjectImage(const QString &imagePath)
+{
+    return ProjectImagePtr(new ProjectImage(imagePath));
+}
+
+/*!
+ * \brief ProjectImage::ProjectImage
  * \param imagePath
  */
-ProjectImage::ProjectImage(QString imagePath)
+ProjectImage::ProjectImage(const QString& imagePath)
     : imagePath(imagePath), willBePruned(false)
 {
 }
@@ -49,7 +59,7 @@ void ProjectImage::addImageTag(const QString &tag)
     {
         imageTags.insert(tag);
 
-        emit tagAdded(this, tag);
+        emit tagAdded(imagePath, tag);
     }
 }
 
@@ -65,7 +75,7 @@ void ProjectImage::removeImageTag(const QString &tag)
     {
         imageTags.remove(tag);
 
-        emit tagRemoved(this, tag);
+        emit tagRemoved(imagePath, tag);
     }
 }
 
@@ -89,7 +99,7 @@ void ProjectImage::setWillBePruned(bool willBePruned)
     {
         this->willBePruned = willBePruned;
 
-        emit willBePrunedChanged(this, willBePruned);
+        emit willBePrunedChanged(imagePath, willBePruned);
     }
 }
 
@@ -151,17 +161,12 @@ ProjectImagePtr ProjectImage::fromJsonObject(const QJsonObject &obj)
     return projectImage;
 }
 
-bool ProjectImage::equals(ProjectImagePtr other) const
-{
-    return equals(other.data());
-}
-
 /*!
  * \brief ProjectImage::equals tests two project images for equality
  * \param other
  * \return
  */
-bool ProjectImage::equals(const ProjectImage *other) const
+bool ProjectImage::equals(ProjectImagePtr other) const
 {
     return other != NULL
             && this->imagePath == other->imagePath
