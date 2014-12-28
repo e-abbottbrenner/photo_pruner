@@ -6,6 +6,7 @@
 #include <cassert>
 #include <QFileInfo>
 #include <QPixmap>
+#include <QUrl>
 
 ImageListModel::ImageListModel()
 {
@@ -66,11 +67,27 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const
         return QFileInfo(image->getImagePath()).fileName();
     case Qt::DecorationRole:
         return QPixmap(image->getImagePath());
+    case UrlRole:
+        return QUrl::fromLocalFile(image->getImagePath());
     default:
         break;
     }
 
     return QVariant();
+}
+
+Qt::ItemFlags ImageListModel::flags(const QModelIndex&) const
+{
+    return Qt::ItemIsSelectable;
+}
+
+QHash<int, QByteArray> ImageListModel::roleNames() const
+{
+    QHash<int, QByteArray> names = QAbstractListModel::roleNames();
+
+    names.insert(UrlRole, "sourceUrl");
+
+    return names;
 }
 
 void ImageListModel::refreshImagePaths()

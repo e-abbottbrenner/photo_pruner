@@ -10,6 +10,11 @@
 class ImageListModel : public QAbstractListModel
 {
 public:
+    enum CustomRoles
+    {
+        UrlRole = Qt::UserRole
+    };
+
     static ImageListModelPtr createImageListModel();
 
     void setProject(ProjectPtr project);
@@ -17,6 +22,10 @@ public:
 
     virtual int rowCount(const QModelIndex &) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
+
+    virtual Qt::ItemFlags flags(const QModelIndex &) const;
+
+    virtual QHash<int, QByteArray> roleNames() const;
 
 private slots:
     void refreshImagePaths();

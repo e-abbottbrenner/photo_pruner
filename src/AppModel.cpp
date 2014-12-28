@@ -30,6 +30,11 @@ QUrl AppModel::getProjectUrl() const
     return currentProjectUrl;
 }
 
+QUrl AppModel::getCurrentImageUrl() const
+{
+    return currentImageUrl;
+}
+
 /*!
  * \brief AppModel::openProject does what you think
  * \param projectPath
@@ -71,6 +76,22 @@ void AppModel::importImages(const QList<QUrl>& imageUrls)
         }
 
         ProjectUtils::addImagesToProject(currentProject, systemPaths);
+    }
+}
+
+/*!
+ * \brief AppModel::determineCurrentImageUrl this is an ugly hack used by the list view to propagate the image url information outside of the delegate
+ * \param currentIndex
+ */
+void AppModel::determineCurrentImageUrl(int currentIndex)
+{
+    QUrl newImageUrl = mainProjectModel->data(mainProjectModel->index(currentIndex), ImageListModel::UrlRole).toUrl();
+
+    if(newImageUrl != currentImageUrl)
+    {
+        currentImageUrl = newImageUrl;
+
+        emit currentImageUrlChanged(newImageUrl);
     }
 }
 

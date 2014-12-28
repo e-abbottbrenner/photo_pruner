@@ -21,16 +21,19 @@ class AppModel : public QObject
 
     Q_PROPERTY(QAbstractItemModel* projectModel READ getRawProjectModel NOTIFY projectModelChanged)
     Q_PROPERTY(QUrl projectUrl READ getProjectUrl NOTIFY projectUrlChanged)
+    Q_PROPERTY(QUrl currentImageUrl READ getCurrentImageUrl NOTIFY currentImageUrlChanged)
 
 public:
     AppModel(QObject *parent = 0);
 
     QAbstractItemModel* getRawProjectModel() const;
     QUrl getProjectUrl() const;
+    QUrl getCurrentImageUrl() const;
 
 signals:
     void projectModelChanged(QAbstractItemModel* model);
-    void projectUrlChanged(QString projectUrl);
+    void projectUrlChanged(QUrl projectUrl);
+    void currentImageUrlChanged(QUrl url);
 
     /* Expose the following functions via slots for qml usage
      * * Open project (path)
@@ -41,12 +44,14 @@ public slots:
     void openProject(const QUrl& projectUrl);
     void saveProject(const QUrl& projectUrl);
     void importImages(const QList<QUrl>& imageUrls);
+    void determineCurrentImageUrl(int currentIndex);
 
 private:
     void setCurrentProject(ProjectPtr project);
 
     ProjectPtr currentProject;
     QUrl currentProjectUrl;
+    QUrl currentImageUrl;
     ImageListModelPtr mainProjectModel;
 };
 

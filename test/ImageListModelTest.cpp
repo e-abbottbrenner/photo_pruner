@@ -89,3 +89,8 @@ TEST_F(ImageListModelTest, testAddData)
 
     EXPECT_EQ(3, model->rowCount(QModelIndex()));
 }
+
+TEST_F(ImageListModelTest, testSelectableFlags)
+{
+    EXPECT_TRUE(model->flags(QModelIndex()).testFlag(Qt::ItemIsSelectable));
+}
