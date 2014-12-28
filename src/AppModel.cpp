@@ -3,6 +3,7 @@
 #include "ImageListModel.h"
 #include "Project.h"
 
+#include <QDebug>
 #include <QUrl>
 
 /*!
@@ -24,13 +25,24 @@ QAbstractItemModel* AppModel::getRawProjectModel() const
     return mainProjectModel.data();
 }
 
+QString AppModel::getProjectUrl() const
+{
+    return currentProjectUrl;
+}
+
 /*!
  * \brief AppModel::openProject does what you think
  * \param projectPath
  */
 void AppModel::openProject(const QString& projectUrl)
 {
+    qDebug() << "Opening project with url" << projectUrl;
     setCurrentProject(ProjectUtils::loadFromFile(QUrl(projectUrl).toLocalFile()));
+
+    if(currentProject)
+    {// successful load
+        currentProjectUrl = projectUrl;
+    }
 }
 
 /*!
@@ -41,7 +53,9 @@ void AppModel::saveProject(const QString& projectUrl)
 {
     if(currentProject)
     {
+        qDebug() << "saving project with url" << projectUrl;
         ProjectUtils::saveToFile(currentProject, QUrl(projectUrl).toLocalFile());
+        currentProjectUrl = projectUrl;
     }
 }
 

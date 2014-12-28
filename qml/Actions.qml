@@ -5,33 +5,34 @@ import QtQuick.Dialogs 1.2
 import PhotoPruner.AppModel 1.0
 
 Item {
+    property Action saveAction: Action {
+        text: "&Save Project"
+        shortcut: StandardKey.Save
 
-    //    Action {
-    //        id: saveAction
+        onTriggered: appModel.saveProject(appModel.projectUrl)
+    }
 
-    //        text: "&Save Project"
-    //        shortcut: StandardKey.Save
+    property Action saveAsAction: Action {
+        text: "Save Project As..."
+        shortcut: StandardKey.SaveAs
 
-    //        onTriggered: {}
-    //    }
+        property FileDialog saveAsDialog: FileDialog {
+            title: "Save As..."
+            selectExisting: false
+            nameFilters: ["Json files (*.json)"]
 
-    //    Action {
-    //        id: saveAsAction
+            onAccepted: appModel.saveProject(fileUrl)
+        }
 
-    //        text: "Save Project As..."
-    //        shortcut: StandardKey.SaveAs
-
-    //        onTriggered: {}
-    //    }
-
-
-
+        onTriggered: saveAsDialog.open()
+    }
 
     property Action openAction: Action {
         text: "&Open Project"
         shortcut: StandardKey.Open
 
         property FileDialog openDialog: FileDialog {
+            title: "Open..."
             nameFilters: ["Json files (*.json)"]
 
             onAccepted: appModel.openProject(fileUrl)

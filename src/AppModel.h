@@ -14,18 +14,21 @@ class AppModel : public QObject
 
     /* Expose the following items via properties:
      * * The item model(s) for displaying and editing the photo list
+     * * The project url to support standard save operation
      */
 
     Q_PROPERTY(QAbstractItemModel* projectModel READ getRawProjectModel NOTIFY projectModelChanged)
+    Q_PROPERTY(QString projectUrl READ getProjectUrl NOTIFY projectUrlChanged)
 
 public:
     AppModel(QObject *parent = 0);
 
     QAbstractItemModel* getRawProjectModel() const;
+    QString getProjectUrl() const;
 
 signals:
     void projectModelChanged(QAbstractItemModel* model);
-    void currentIndexChanged(const QModelIndex& index);
+    void projectUrlChanged(QString projectUrl);
 
     /* Expose the following functions via slots for qml usage
      * * Open project (path)
@@ -39,6 +42,7 @@ private:
     void setCurrentProject(ProjectPtr project);
 
     ProjectPtr currentProject;
+    QString currentProjectUrl;
     ImageListModelPtr mainProjectModel;
 };
 

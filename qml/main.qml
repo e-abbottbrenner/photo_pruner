@@ -21,6 +21,8 @@ ApplicationWindow {
             title: "&File"
 
             MenuItem { action: actions.openAction }
+            MenuItem { action: actions.saveAction }
+            MenuItem { action: actions.saveAsAction }
         }
     }
 
