@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/Cell.qml</file>
+        <file>qml/Actions.qml</file>
     </qresource>
 </RCC>

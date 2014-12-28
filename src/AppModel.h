@@ -32,8 +32,8 @@ signals:
      * * Save project (path)
      */
 public slots:
-    void openProject(const QString& projectPath);
-    void saveProject(const QString& projectPath);
+    void openProject(const QString& projectUrl);
+    void saveProject(const QString& projectUrl);
 
 private:
     void setCurrentProject(ProjectPtr project);

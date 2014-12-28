@@ -3,6 +3,8 @@
 #include "ImageListModel.h"
 #include "Project.h"
 
+#include <QUrl>
+
 /*!
  * \brief AppModel::AppModel constructor, needs to be public for qml
  */
@@ -11,9 +13,6 @@ AppModel::AppModel(QObject* parent)
     , mainProjectModel(ImageListModel::createImageListModel())
 {
     setCurrentProject(Project::createProject());
-
-    // TEMPORARY UNTIL WE GET ACTIONS WORKING
-    this->openProject(QString(REPOSITORY_PATH) + "/test/resources/projects/sampleproj.json");
 }
 
 /*!
@@ -29,20 +28,20 @@ QAbstractItemModel* AppModel::getRawProjectModel() const
  * \brief AppModel::openProject does what you think
  * \param projectPath
  */
-void AppModel::openProject(const QString& projectPath)
+void AppModel::openProject(const QString& projectUrl)
 {
-    setCurrentProject(ProjectUtils::loadFromFile(projectPath));
+    setCurrentProject(ProjectUtils::loadFromFile(QUrl(projectUrl).toLocalFile()));
 }
 
 /*!
  * \brief AppModel::saveProject does what you think
  * \param projectPath
  */
-void AppModel::saveProject(const QString& projectPath)
+void AppModel::saveProject(const QString& projectUrl)
 {
     if(currentProject)
     {
-        ProjectUtils::saveToFile(currentProject, projectPath);
+        ProjectUtils::saveToFile(currentProject, QUrl(projectUrl).toLocalFile());
     }
 }
 

@@ -1,9 +1,9 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.3
-import photopruner.appmodel 1.0
+import QtQuick 2.3
+import QtQuick.Controls 1.2
 
-ApplicationWindow
-{
+import PhotoPruner.AppModel 1.0
+
+ApplicationWindow {
     id: mainWindow
     visible: true
     width: 800
@@ -12,15 +12,20 @@ ApplicationWindow
     minimumHeight: 600
     color: "white"
 
-//    AppModel {
-//        id: appModel
-//    }
+    Actions {
+        id: actions
+    }
+
+    menuBar: MenuBar {
+        Menu {
+            title: "&File"
+
+            MenuItem { action: actions.openAction }
+        }
+    }
 
     ListView {
         width: 200; height: 250
-
-//        color: blue
-        visible: true
 
         anchors.fill: parent
 

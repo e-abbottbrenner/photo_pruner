@@ -9,12 +9,15 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
-    AppModel *appModel = new AppModel(&app);
-
+    // register types to make the property system happy
     qRegisterMetaType<QAbstractItemModel*>();
-    qmlRegisterType<AppModel>("photopruner.appmodel", 1, 0, "AppModel");
+
+    // register types to make qml happy
+    qmlRegisterType<AppModel>("PhotoPruner.AppModel", 1, 0, "AppModel");
 
     QQmlApplicationEngine engine;
+
+    AppModel *appModel = new AppModel(&app);
 
     QQmlContext *context = engine.rootContext();
     context->setContextProperty("appModel", appModel);

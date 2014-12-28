@@ -1,3 +1,3 @@
 DISTFILES += \
     $$PWD/main.qml \
-    $$PWD/Cell.qml
+    $$PWD/Actions.qml
