@@ -40,4 +40,19 @@ Item {
 
         onTriggered: openDialog.open()
     }
+
+    property Action importAction: Action {
+        text: "&Import Images"
+        shortcut: "Ctrl+I"
+
+        property FileDialog importDialog: FileDialog {
+            title: "Import Images..."
+            selectMultiple: true
+            nameFilters: ["Jpg files (*.jpg)", "Jpeg files (*.jpeg)", "Png files (*.png)"]
+
+            onAccepted: appModel.importImages(fileUrls)
+        }
+
+        onTriggered: importDialog.open()
+    }
 }

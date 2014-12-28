@@ -6,6 +6,8 @@
 #include "ImageListModelPtr.h"
 #include "ProjectPtr.h"
 
+#include <QUrl>
+
 class QAbstractItemModel;
 
 class AppModel : public QObject
@@ -18,13 +20,13 @@ class AppModel : public QObject
      */
 
     Q_PROPERTY(QAbstractItemModel* projectModel READ getRawProjectModel NOTIFY projectModelChanged)
-    Q_PROPERTY(QString projectUrl READ getProjectUrl NOTIFY projectUrlChanged)
+    Q_PROPERTY(QUrl projectUrl READ getProjectUrl NOTIFY projectUrlChanged)
 
 public:
     AppModel(QObject *parent = 0);
 
     QAbstractItemModel* getRawProjectModel() const;
-    QString getProjectUrl() const;
+    QUrl getProjectUrl() const;
 
 signals:
     void projectModelChanged(QAbstractItemModel* model);
@@ -33,16 +35,18 @@ signals:
     /* Expose the following functions via slots for qml usage
      * * Open project (path)
      * * Save project (path)
+     * * Import images (path list)
      */
 public slots:
-    void openProject(const QString& projectUrl);
-    void saveProject(const QString& projectUrl);
+    void openProject(const QUrl& projectUrl);
+    void saveProject(const QUrl& projectUrl);
+    void importImages(const QList<QUrl>& imageUrls);
 
 private:
     void setCurrentProject(ProjectPtr project);
 
     ProjectPtr currentProject;
-    QString currentProjectUrl;
+    QUrl currentProjectUrl;
     ImageListModelPtr mainProjectModel;
 };
 

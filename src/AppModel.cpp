@@ -25,7 +25,7 @@ QAbstractItemModel* AppModel::getRawProjectModel() const
     return mainProjectModel.data();
 }
 
-QString AppModel::getProjectUrl() const
+QUrl AppModel::getProjectUrl() const
 {
     return currentProjectUrl;
 }
@@ -34,10 +34,10 @@ QString AppModel::getProjectUrl() const
  * \brief AppModel::openProject does what you think
  * \param projectPath
  */
-void AppModel::openProject(const QString& projectUrl)
+void AppModel::openProject(const QUrl& projectUrl)
 {
     qDebug() << "Opening project with url" << projectUrl;
-    setCurrentProject(ProjectUtils::loadFromFile(QUrl(projectUrl).toLocalFile()));
+    setCurrentProject(ProjectUtils::loadFromFile(projectUrl.toLocalFile()));
 
     if(currentProject)
     {// successful load
@@ -49,13 +49,28 @@ void AppModel::openProject(const QString& projectUrl)
  * \brief AppModel::saveProject does what you think
  * \param projectPath
  */
-void AppModel::saveProject(const QString& projectUrl)
+void AppModel::saveProject(const QUrl& projectUrl)
 {
     if(currentProject)
     {
         qDebug() << "saving project with url" << projectUrl;
-        ProjectUtils::saveToFile(currentProject, QUrl(projectUrl).toLocalFile());
+        ProjectUtils::saveToFile(currentProject, projectUrl.toLocalFile());
         currentProjectUrl = projectUrl;
+    }
+}
+
+void AppModel::importImages(const QList<QUrl>& imageUrls)
+{
+    if(currentProject)
+    {
+        QStringList systemPaths;
+
+        foreach(QUrl url, imageUrls)
+        {
+            systemPaths << url.toLocalFile();
+        }
+
+        ProjectUtils::addImagesToProject(currentProject, systemPaths);
     }
 }
 

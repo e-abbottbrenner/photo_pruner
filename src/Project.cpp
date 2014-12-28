@@ -169,6 +169,8 @@ namespace ProjectUtils
      */
     void addImagesToProject(ProjectPtr project, const QStringList &imagePaths)
     {
+        assert(project);
+
         foreach(QString imagePath, imagePaths)
         {// add new images to the project
             project->addProjectImage(imagePath);
