@@ -5,12 +5,14 @@ HEADERS += \
     $$PWD/ProjectPtr.h \
     $$PWD/Project.h \
     $$PWD/ImageListModel.h \
-    $$PWD/ImageListModelPtr.h
+    $$PWD/ImageListModelPtr.h \
+    $$PWD/AppModel.h
 
 SOURCES += \
     $$PWD/ProjectImage.cpp \
     $$PWD/Project.cpp \
-    $$PWD/ImageListModel.cpp
+    $$PWD/ImageListModel.cpp \
+    $$PWD/AppModel.cpp
 
 
 !test {
