@@ -76,19 +76,101 @@ ApplicationWindow {
 
                 color: "red"
 
+                clip: true
+
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                Image {
-                    id: image
+                Flickable {
+                    id: flickArea
 
-                    asynchronous: true
+                    contentWidth: image.width
+                    contentHeight: image.height
 
-                    source: appModel.currentImageUrl
+                    interactive: true
+                    clip: true
 
-                    anchors.fill: parent
+                    boundsBehavior: Flickable.StopAtBounds
 
-                    onSourceChanged: console.log("source changed to" + source)
+                    anchors.fill: previewPanel
+
+                    Connections {
+                        target: image
+                        onScaleChanged: {
+                            var bounds = previewPanel.mapFromItem(image, image.x, image.y, image.width, image.height)
+
+                            flickArea.leftMargin = Math.max(0, -bounds.x)
+                            flickArea.topMargin = Math.max(0, -bounds.y)
+
+                            flickArea.contentWidth = Math.max(image.width, bounds.width - flickArea.leftMargin)
+                            flickArea.contentHeight = Math.max(image.height, bounds.height - flickArea.topMargin)
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        Rectangle {
+                            anchors.fill: parent
+                        }
+
+                        onWheel: {
+                            // compute this before rescaling so we have correct center point
+                            // note: mappedPoint should retain its position in screen space
+                            var mappedPoint = mapToItem(image, wheel.x, wheel.y)
+
+                            var exp = wheel.angleDelta.y / 15.0
+                            // rescale
+                            image.scaleOriginX = mappedPoint.x
+                            image.scaleOriginY = mappedPoint.y
+                            image.scale = image.scale * Math.pow(1.05, exp)
+
+                            console.log(image.scale)
+                        }
+                    }
+
+                    Image {
+                        id: image
+
+                        asynchronous: true
+
+                        width: previewPanel.width
+                        height: previewPanel.height
+
+                        fillMode: Image.PreserveAspectFit
+
+                        source: appModel.currentImageUrl
+
+                        property real scale: 1.0
+                        property real scaleOriginX: 0
+                        property real scaleOriginY: 0
+
+                        property Translate shiftCenterTransform: Translate {
+                            x: -image.scaleOriginX
+                            y: -image.scaleOriginY
+                        }
+
+                        property Scale scalingTransform: Scale {
+                            origin.x: 0
+                            origin.y: 0
+                            xScale: image.scale
+                            yScale: image.scale
+                        }
+
+                        property Translate shiftBackTransform: Translate {
+                            x: image.scaleOriginX
+                            y: image.scaleOriginY
+                        }
+
+                        transform: [shiftCenterTransform, scalingTransform, shiftBackTransform]
+
+                        onSourceChanged: {
+                            image.scale = 1.0
+                            image.scaleOriginX = 0;
+                            image.scaleOriginY = 0;
+                            console.log("source changed to" + source)
+                        }
+                    }
                 }
             }
         }
