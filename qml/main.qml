@@ -84,8 +84,8 @@ ApplicationWindow {
                 Flickable {
                     id: flickArea
 
-                    contentWidth: image.width
-                    contentHeight: image.height
+                    contentWidth: image.width * image.scale
+                    contentHeight: image.height * image.scale
 
                     interactive: true
                     clip: true
@@ -93,19 +93,6 @@ ApplicationWindow {
                     boundsBehavior: Flickable.StopAtBounds
 
                     anchors.fill: previewPanel
-
-                    Connections {
-                        target: image
-                        onScaleChanged: {
-                            var bounds = previewPanel.mapFromItem(image, image.x, image.y, image.width, image.height)
-
-                            flickArea.leftMargin = Math.max(0, -bounds.x)
-                            flickArea.topMargin = Math.max(0, -bounds.y)
-
-                            flickArea.contentWidth = Math.max(image.width, bounds.width - flickArea.leftMargin)
-                            flickArea.contentHeight = Math.max(image.height, bounds.height - flickArea.topMargin)
-                        }
-                    }
 
                     MouseArea {
                         id: mouseArea
@@ -121,28 +108,33 @@ ApplicationWindow {
                             // note: mappedPoint should retain its position in screen space
                             var mappedPoint = mapToItem(image, wheel.x, wheel.y)
 
-                            // compute this one before updating, we need the destination point in the
-                            // scaled up coordinate system
-                            var mappedPointDestinationX = (mappedPoint.x - image.scaleOriginX) * image.scale + image.scaleDestinationX
-                            var mappedPointDestinationY = (mappedPoint.y - image.scaleOriginY) * image.scale + image.scaleDestinationY
+                            // left and top edge in image coords
+                            var leftEdge = flickArea.contentX / image.scale
+                            var topEdge = flickArea.contentY / image.scale
+
+                            // the distance from the edges in flickArea coords
+                            var scaledDistLeft = (mappedPoint.x - leftEdge) * image.scale
+                            var scaledDistTop = (mappedPoint.y - topEdge) * image.scale
 
                             var exp = wheel.angleDelta.y / 15.0
 
                             // non-nan limits, nans are bad
                             var newScale = Math.max(1, Math.min(100000, image.scale * Math.pow(1.05, exp)))
 
+                            var mappedPointDestX = mappedPoint.x * newScale
+                            var mappedPointDestY = mappedPoint.y * newScale
+
+                            var scaledContentX = mappedPointDestX - scaledDistLeft
+                            var scaledContentY = mappedPointDestY - scaledDistTop
+
                             // rescale
                             image.scale = newScale
 
-                            image.scaleOriginX = mappedPoint.x
-                            image.scaleOriginY = mappedPoint.y
-                            image.scaleDestinationX = mappedPointDestinationX
-                            image.scaleDestinationY = mappedPointDestinationY
+                            flickArea.contentX = scaledContentX
+                            flickArea.contentY = scaledContentY
 
                             // just in case
                             flickArea.returnToBounds()
-
-                            console.log("mapped", mappedPoint.x, mappedPoint.y)
                         }
                     }
 
@@ -159,15 +151,6 @@ ApplicationWindow {
                         source: appModel.currentImageUrl
 
                         property real scale: 1.0
-                        property real scaleOriginX: 0
-                        property real scaleOriginY: 0
-                        property real scaleDestinationX: 0
-                        property real scaleDestinationY: 0
-
-                        property Translate shiftCenterTransform: Translate {
-                            x: -image.scaleOriginX
-                            y: -image.scaleOriginY
-                        }
 
                         property Scale scalingTransform: Scale {
                             origin.x: 0
@@ -176,19 +159,10 @@ ApplicationWindow {
                             yScale: image.scale
                         }
 
-                        property Translate shiftBackTransform: Translate {
-                            x: image.scaleDestinationX
-                            y: image.scaleDestinationY
-                        }
-
-                        transform: [shiftCenterTransform, scalingTransform, shiftBackTransform]
+                        transform: scalingTransform
 
                         onSourceChanged: {
                             image.scale = 1.0
-                            image.scaleOriginX = 0
-                            image.scaleOriginY = 0
-                            image.scaleDestinationX = 0
-                            image.scaleDestinationY = 0
                             console.log("source changed to" + source)
                         }
                     }
