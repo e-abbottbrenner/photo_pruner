@@ -121,13 +121,28 @@ ApplicationWindow {
                             // note: mappedPoint should retain its position in screen space
                             var mappedPoint = mapToItem(image, wheel.x, wheel.y)
 
+                            // compute this one before updating, we need the destination point in the
+                            // scaled up coordinate system
+                            var mappedPointDestinationX = (mappedPoint.x - image.scaleOriginX) * image.scale + image.scaleDestinationX
+                            var mappedPointDestinationY = (mappedPoint.y - image.scaleOriginY) * image.scale + image.scaleDestinationY
+
                             var exp = wheel.angleDelta.y / 15.0
+
+                            // non-nan limits, nans are bad
+                            var newScale = Math.max(1, Math.min(100000, image.scale * Math.pow(1.05, exp)))
+
                             // rescale
+                            image.scale = newScale
+
                             image.scaleOriginX = mappedPoint.x
                             image.scaleOriginY = mappedPoint.y
-                            image.scale = image.scale * Math.pow(1.05, exp)
+                            image.scaleDestinationX = mappedPointDestinationX
+                            image.scaleDestinationY = mappedPointDestinationY
 
-                            console.log(image.scale)
+                            // just in case
+                            flickArea.returnToBounds()
+
+                            console.log("mapped", mappedPoint.x, mappedPoint.y)
                         }
                     }
 
@@ -146,6 +161,8 @@ ApplicationWindow {
                         property real scale: 1.0
                         property real scaleOriginX: 0
                         property real scaleOriginY: 0
+                        property real scaleDestinationX: 0
+                        property real scaleDestinationY: 0
 
                         property Translate shiftCenterTransform: Translate {
                             x: -image.scaleOriginX
@@ -160,16 +177,18 @@ ApplicationWindow {
                         }
 
                         property Translate shiftBackTransform: Translate {
-                            x: image.scaleOriginX
-                            y: image.scaleOriginY
+                            x: image.scaleDestinationX
+                            y: image.scaleDestinationY
                         }
 
                         transform: [shiftCenterTransform, scalingTransform, shiftBackTransform]
 
                         onSourceChanged: {
                             image.scale = 1.0
-                            image.scaleOriginX = 0;
-                            image.scaleOriginY = 0;
+                            image.scaleOriginX = 0
+                            image.scaleOriginY = 0
+                            image.scaleDestinationX = 0
+                            image.scaleDestinationY = 0
                             console.log("source changed to" + source)
                         }
                     }
