@@ -92,6 +92,8 @@ ApplicationWindow {
 
                     boundsBehavior: Flickable.StopAtBounds
 
+                    maximumFlickVelocity: 0
+
                     anchors.fill: previewPanel
 
                     MouseArea {
@@ -104,34 +106,38 @@ ApplicationWindow {
                         height: flickArea.contentHeight
 
                         onWheel: {
-                            // compute this before rescaling so we have correct center point
+                            // current point the mouse is over in image coords
                             // note: mappedPoint should retain its position in screen space
                             var mappedPoint = mapToItem(image, wheel.x, wheel.y)
 
-                            // left and top edge in image coords
-                            var leftEdge = flickArea.contentX / image.scale
-                            var topEdge = flickArea.contentY / image.scale
+                            // left and top edge in flick area coords
+                            var leftEdge = flickArea.contentX
+                            var topEdge = flickArea.contentY
 
-                            // the distance from the edges in flickArea coords
-                            var scaledDistLeft = (mappedPoint.x - leftEdge) * image.scale
-                            var scaledDistTop = (mappedPoint.y - topEdge) * image.scale
+                            // the distance from the edges in flickArea coords (multiply by scale to go from image coords to flick area coords)
+                            var scaledDistLeft = mappedPoint.x * image.scale - leftEdge
+                            var scaledDistTop = mappedPoint.y * image.scale - topEdge
 
                             var exp = wheel.angleDelta.y / 15.0
 
-                            // non-nan limits, nans are bad
+                            // new scale with non-nan limits, nans are bad
                             var newScale = Math.max(1, Math.min(100000, image.scale * Math.pow(1.05, exp)))
 
+                            // the final location of the mapped point in flick area coords
                             var mappedPointDestX = mappedPoint.x * newScale
                             var mappedPointDestY = mappedPoint.y * newScale
 
-                            var scaledContentX = mappedPointDestX - scaledDistLeft
-                            var scaledContentY = mappedPointDestY - scaledDistTop
+                            // the new contentX/contentY positions in flick area coords, computed by taking the location of the mapped point
+                            // and subtracting the desired distance between it and the new contentx/contenty positions
+                            // this desired distance is the same as the old distance because we don't want it to move on the screen
+                            var newContentX = mappedPointDestX - scaledDistLeft
+                            var newContentY = mappedPointDestY - scaledDistTop
 
                             // rescale
                             image.scale = newScale
 
-                            flickArea.contentX = scaledContentX
-                            flickArea.contentY = scaledContentY
+                            flickArea.contentX = newContentX
+                            flickArea.contentY = newContentY
 
                             // just in case
                             flickArea.returnToBounds()
