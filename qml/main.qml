@@ -108,11 +108,13 @@ ApplicationWindow {
                     }
 
                     MouseArea {
-                        anchors.fill: parent
+                        id: mouseArea
 
-                        Rectangle {
-                            anchors.fill: parent
-                        }
+                        // keep the mouse area over the flick area's content zone so it always works
+                        x: flickArea.contentX
+                        y: flickArea.contentY
+                        width: flickArea.contentWidth
+                        height: flickArea.contentHeight
 
                         onWheel: {
                             // compute this before rescaling so we have correct center point
