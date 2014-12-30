@@ -41,6 +41,8 @@ signals:
     void projectUrlChanged(QUrl projectUrl);
 
 private:
+    void setProjectUrl(QUrl url);
+
     QUrl currentProjectUrl;
     QUrl currentImageUrl;
 };

@@ -38,7 +38,7 @@ void AppController::newProject()
 
     appModel()->setCurrentProject(Project::createProject());
 
-    currentProjectUrl = QUrl();
+    setProjectUrl(QUrl());
 }
 
 /*!
@@ -52,7 +52,7 @@ void AppController::openProject(const QUrl& projectUrl)
 
     if(currentProject())
     {// successful load
-        currentProjectUrl = projectUrl;
+        setProjectUrl(projectUrl);
     }
 }
 
@@ -66,6 +66,16 @@ void AppController::saveProject(const QUrl& projectUrl)
     {
         qDebug() << "saving project with url" << projectUrl;
         ProjectUtils::saveToFile(currentProject(), projectUrl.toLocalFile());
-        currentProjectUrl = projectUrl;
+        setProjectUrl(projectUrl);
+    }
+}
+
+void AppController::setProjectUrl(QUrl url)
+{
+    if(currentProjectUrl != url)
+    {
+        currentProjectUrl = url;
+
+        emit projectUrlChanged(url);
     }
 }

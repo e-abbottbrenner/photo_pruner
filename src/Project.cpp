@@ -236,6 +236,11 @@ namespace ProjectUtils
 
         QJsonDocument document = QJsonDocument::fromJson(loadFile.readAll());
 
+        if(document.isEmpty())
+        {
+            return ProjectPtr();
+        }
+
         return Project::fromJsonObject(document.object());
     }
 }
