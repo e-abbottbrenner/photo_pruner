@@ -2,9 +2,16 @@ import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 
-import PhotoPruner.AppController 1.0
+import PhotoPruner.Controllers 1.0
 
 Item {
+    property Action newAction: Action {
+        text: "&New Project"
+        shortcut: StandardKey.New
+
+        onTriggered: appController.newProject()
+    }
+
     property Action saveAction: Action {
         text: "&Save Project"
         shortcut: StandardKey.Save
@@ -50,7 +57,7 @@ Item {
             selectMultiple: true
             nameFilters: ["Jpg files (*.jpg)", "Jpeg files (*.jpeg)", "Png files (*.png)"]
 
-            onAccepted: appController.importImages(fileUrls)
+            onAccepted: projectController.importImages(fileUrls)
         }
 
         onTriggered: importDialog.open()

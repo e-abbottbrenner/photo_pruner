@@ -19,6 +19,9 @@ public:
 
     ImageListModelPtr getProjectModel() const;
 
+signals:
+    void currentProjectChanged(ProjectPtr project);
+
 private:
     AppModel();
 

@@ -8,14 +8,20 @@ HEADERS += \
     $$PWD/ImageListModelPtr.h \
     $$PWD/AppController.h \
     $$PWD/AppModel.h \
-    $$PWD/AppModelPtr.h
+    $$PWD/AppModelPtr.h \
+    $$PWD/ProjectController.h \
+    $$PWD/ImageController.h \
+    $$PWD/TopLevelController.h
 
 SOURCES += \
     $$PWD/ProjectImage.cpp \
     $$PWD/Project.cpp \
     $$PWD/ImageListModel.cpp \
     $$PWD/AppController.cpp \
-    $$PWD/AppModel.cpp
+    $$PWD/AppModel.cpp \
+    $$PWD/ProjectController.cpp \
+    $$PWD/ImageController.cpp \
+    $$PWD/TopLevelController.cpp
 
 
 !test {

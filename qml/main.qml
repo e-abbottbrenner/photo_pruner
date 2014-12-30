@@ -2,7 +2,7 @@ import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 
-import PhotoPruner.AppController 1.0
+import PhotoPruner.Controllers 1.0
 
 ApplicationWindow {
     id: mainWindow
@@ -21,15 +21,19 @@ ApplicationWindow {
         Menu {
             title: "&File"
 
+            MenuItem { action: actions.newAction }
             MenuItem { action: actions.openAction }
+            MenuSeparator {}
             MenuItem { action: actions.saveAction }
             MenuItem { action: actions.saveAsAction }
+            MenuSeparator{}
             MenuItem { action: actions.importAction }
         }
     }
 
     toolBar: ToolBar {
         RowLayout {
+            ToolButton { action: actions.newAction }
             ToolButton { action: actions.openAction }
             ToolButton { action: actions.saveAction }
             ToolButton { action: actions.saveAsAction }
@@ -77,11 +81,11 @@ ApplicationWindow {
                 highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
                 focus: true
 
-                onCurrentIndexChanged: appController.determineCurrentImageUrl(currentIndex)
+                onCurrentIndexChanged: imageController.setCurrentIndex(currentIndex)
             }
 
             ImagePreviewPanel {
-                imageSource: appController.currentImageUrl
+                imageSource: imageController.currentImageUrl
                 color: "grey"
 
                 Layout.fillHeight: true

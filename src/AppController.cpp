@@ -21,7 +21,7 @@ AppController::AppController(QObject* parent)
  */
 QAbstractItemModel* AppController::getRawProjectModel() const
 {
-    return appModel->getProjectModel().data();
+    return appModel()->getProjectModel().data();
 }
 
 QUrl AppController::getProjectUrl() const
@@ -29,14 +29,16 @@ QUrl AppController::getProjectUrl() const
     return currentProjectUrl;
 }
 
-QUrl AppController::getCurrentImageUrl() const
+/*!
+ * \brief AppController::newProject does what you think
+ */
+void AppController::newProject()
 {
-    return currentImageUrl;
-}
+    qDebug() << "Creating new project";
 
-void AppController::setAppModel(AppModelPtr appModel)
-{
-    this->appModel = appModel;
+    appModel()->setCurrentProject(Project::createProject());
+
+    currentProjectUrl = QUrl();
 }
 
 /*!
@@ -46,9 +48,9 @@ void AppController::setAppModel(AppModelPtr appModel)
 void AppController::openProject(const QUrl& projectUrl)
 {
     qDebug() << "Opening project with url" << projectUrl;
-    appModel->setCurrentProject(ProjectUtils::loadFromFile(projectUrl.toLocalFile()));
+    appModel()->setCurrentProject(ProjectUtils::loadFromFile(projectUrl.toLocalFile()));
 
-    if(appModel->getCurrentProject())
+    if(currentProject())
     {// successful load
         currentProjectUrl = projectUrl;
     }
@@ -60,41 +62,10 @@ void AppController::openProject(const QUrl& projectUrl)
  */
 void AppController::saveProject(const QUrl& projectUrl)
 {
-    if(appModel->getCurrentProject())
+    if(currentProject())
     {
         qDebug() << "saving project with url" << projectUrl;
-        ProjectUtils::saveToFile(appModel->getCurrentProject(), projectUrl.toLocalFile());
+        ProjectUtils::saveToFile(currentProject(), projectUrl.toLocalFile());
         currentProjectUrl = projectUrl;
-    }
-}
-
-void AppController::importImages(const QList<QUrl>& imageUrls)
-{
-    if(appModel->getCurrentProject())
-    {
-        QStringList systemPaths;
-
-        foreach(QUrl url, imageUrls)
-        {
-            systemPaths << url.toLocalFile();
-        }
-
-        ProjectUtils::addImagesToProject(appModel->getCurrentProject(), systemPaths);
-    }
-}
-
-/*!
- * \brief AppController::determineCurrentImageUrl this is an ugly hack used by the list view to propagate the image url information outside of the delegate
- * \param currentIndex
- */
-void AppController::determineCurrentImageUrl(int currentIndex)
-{
-    QUrl newImageUrl = appModel->getProjectModel()->data(appModel->getProjectModel()->index(currentIndex), ImageListModel::UrlRole).toUrl();
-
-    if(newImageUrl != currentImageUrl)
-    {
-        currentImageUrl = newImageUrl;
-
-        emit currentImageUrlChanged(newImageUrl);
     }
 }

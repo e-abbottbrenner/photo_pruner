@@ -20,8 +20,13 @@ AppModelPtr AppModel::createAppModel()
  */
 void AppModel::setCurrentProject(ProjectPtr project)
 {
-    currentProject = project;
-    projectModel->setProject(project);
+    if(project != currentProject)
+    {
+        currentProject = project;
+        projectModel->setProject(project);
+
+        emit currentProjectChanged(project);
+    }
 }
 
 ProjectPtr AppModel::getCurrentProject() const
