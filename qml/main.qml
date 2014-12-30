@@ -55,8 +55,7 @@ ApplicationWindow {
                 id: imageListDelegate
 
                 Item {
-                    property string sourcePath: model.sourcePath
-                    property url sourceUrl: model.sourceUrl
+                    property variant sourceModel: model
 
                     width: 180; height: 40
                     Column {
@@ -85,12 +84,12 @@ ApplicationWindow {
                 focus: true
 
                 onCurrentItemChanged: {
-                    imageController.setImage(currentItem.sourcePath)
+                    imageController.setImage(currentItem.sourceModel.sourcePath)
                 }
             }
 
             ImagePreviewPanel {
-                imageSource: listView.currentItem? listView.currentItem.sourceUrl : ""
+                imageSource: listView.currentItem? listView.currentItem.sourceModel.sourceUrl : ""
                 color: "grey"
 
                 Layout.fillHeight: true
