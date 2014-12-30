@@ -8,7 +8,9 @@ SOURCES += \
     $$PWD/ProjectTest.cpp \
     $$PWD/ImageListModelTest.cpp \
     $$PWD/AppModelTest.cpp \
-    $$PWD/AppControllerTest.cpp
+    $$PWD/AppControllerTest.cpp \
+    $$PWD/ProjectControllerTest.cpp \
+    $$PWD/ImageControllerTest.cpp
 
 HEADERS += \
     $$PWD/GoogleTest.h \

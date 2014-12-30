@@ -1,6 +1,7 @@
 #include "GoogleTest.h"
 
 #include "AppModel.h"
+#include "ImageListModel.h"
 #include "Project.h"
 
 #include <QSignalSpy>
@@ -23,7 +24,8 @@ protected:
 
 TEST_F(AppModelTest, testModelsExist)
 {
-    EXPECT_FALSE(appModel->getProjectModel().isNull());
+    ASSERT_FALSE(appModel->getProjectModel().isNull());
+    EXPECT_EQ(appModel->getProjectModel()->getProject(), appModel->getCurrentProject());
 }
 
 TEST_F(AppModelTest, testSetProject)
@@ -35,6 +37,7 @@ TEST_F(AppModelTest, testSetProject)
     appModel->setCurrentProject(newProj);
 
     EXPECT_EQ(appModel->getCurrentProject(), newProj);
+    EXPECT_EQ(appModel->getProjectModel()->getProject(), newProj);
 
     ASSERT_EQ(1, newProjSpy.size());
 }
