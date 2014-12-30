@@ -42,8 +42,11 @@ public:
 signals:
     void imageAdded(const QString& image);
     void imageRemoved(const QString& image);
+    void imageChanged(const QString& image);
 
 private:
+    void connectTo(ProjectImagePtr image);
+
     // we use a map so that we have consistent ordering for the items in it
     ProjectImageMap projectImages;
 

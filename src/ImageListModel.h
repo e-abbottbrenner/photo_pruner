@@ -32,13 +32,14 @@ private slots:
     void refreshImagePaths();
     void onImageAdded(const QString& imagePath);
     void onImageRemoved(const QString& imagePath);
+    void onImageChanged(const QString& imagePath);
 
 private:
     ImageListModel();
 
     ProjectPtr project;
 
-    QStringList imagePaths;
+    QList<QString> imagePaths;
 };
 
 #endif // IMAGELISTMODEL_H

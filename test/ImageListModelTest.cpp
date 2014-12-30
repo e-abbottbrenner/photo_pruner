@@ -2,6 +2,7 @@
 
 #include "ImageListModel.h"
 #include "Project.h"
+#include "ProjectImage.h"
 #include "ResourcePath.h"
 
 #include <QDir>
@@ -88,6 +89,22 @@ TEST_F(ImageListModelTest, testAddData)
     EXPECT_EQ(1, insertSpy[0][2].toInt());
 
     EXPECT_EQ(3, model->rowCount(QModelIndex()));
+}
+
+TEST_F(ImageListModelTest, testDataChanged)
+{
+    ProjectImagePtr image = project->getImage("bleh");
+
+    // just to be sure we're changing it
+    image->setWillBePruned(false);
+
+    QSignalSpy dataChangedSpy(model.data(), SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+
+    image->setWillBePruned(true);
+
+    ASSERT_EQ(1, dataChangedSpy.size());
+
+    EXPECT_EQ(1, dataChangedSpy[0][0].toModelIndex().row());
 }
 
 TEST_F(ImageListModelTest, testSelectableFlags)

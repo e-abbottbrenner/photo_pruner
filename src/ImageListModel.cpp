@@ -32,6 +32,7 @@ void ImageListModel::setProject(ProjectPtr project)
         {
             connect(project.data(), &Project::imageAdded, this, &ImageListModel::onImageAdded);
             connect(project.data(), &Project::imageRemoved, this, &ImageListModel::onImageRemoved);
+            connect(project.data(), &Project::imageChanged, this, &ImageListModel::onImageChanged);
         }
 
         refreshImagePaths();
@@ -133,4 +134,13 @@ void ImageListModel::onImageRemoved(const QString& imagePath)
     imagePaths.removeAt(removalPoint);
 
     endRemoveRows();
+}
+
+void ImageListModel::onImageChanged(const QString& imagePath)
+{
+    // find the first instance of the path
+    int row = imagePaths.indexOf(imagePath);
+
+    // signal for data changed
+    emit dataChanged(index(row), index(row));
 }

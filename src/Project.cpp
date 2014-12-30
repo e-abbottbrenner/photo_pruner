@@ -94,7 +94,11 @@ void Project::addProjectImage(const QString &imagePath)
 {
     if(!projectImages.contains(imagePath))
     {
-        projectImages.insert(imagePath, ProjectImage::createProjectImage(imagePath));
+        ProjectImagePtr image = ProjectImage::createProjectImage(imagePath);
+
+        projectImages.insert(imagePath, image);
+
+        connectTo(image);
 
         emit imageAdded(imagePath);
     }
@@ -150,9 +154,18 @@ ProjectPtr Project::fromJsonObject(const QJsonObject& object)
         ProjectImagePtr image = ProjectImage::fromJsonObject(value.toObject());
 
         project->projectImages.insert(image->getImagePath(), image);
+
+        project->connectTo(image);
     }
 
     return project;
+}
+
+void Project::connectTo(ProjectImagePtr image)
+{
+    connect(image.data(), &ProjectImage::tagAdded, this, &Project::imageChanged);
+    connect(image.data(), &ProjectImage::tagRemoved, this, &Project::imageChanged);
+    connect(image.data(), &ProjectImage::willBePrunedChanged, this, &Project::imageChanged);
 }
 
 Project::Project()

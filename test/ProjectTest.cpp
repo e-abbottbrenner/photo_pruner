@@ -85,6 +85,37 @@ TEST_F(ProjectTest, testRemoveImagesFromProject)
     EXPECT_EQ(0, project->getProjectImages().size());
 }
 
+TEST_F(ProjectTest, testChangeImagesInProject)
+{
+    QString imagePath = "asdf";
+
+    project->addProjectImage(imagePath);
+
+    ProjectImagePtr image = project->getImage(imagePath);
+
+    QSignalSpy changedSpy(project.data(), SIGNAL(imageChanged(QString)));
+
+    image->addImageTag("blah");
+
+    ASSERT_EQ(1, changedSpy.size());
+
+    EXPECT_EQ(imagePath, changedSpy[0][0].toString());
+
+    project = ProjectUtils::loadFromFile(QDir(RESOURCE_PATH).absoluteFilePath("projects/sampleproj.json"));
+
+    image = project->getImage("bleh");
+
+    image->setWillBePruned(false);
+
+    QSignalSpy changedSpyLoad(project.data(), SIGNAL(imageChanged(QString)));
+
+    image->setWillBePruned(true);
+
+    ASSERT_EQ(1, changedSpyLoad.size());
+
+    EXPECT_EQ("bleh", changedSpyLoad[0][0].toString());
+}
+
 TEST_F(ProjectTest, testGetProjectImage)
 {
     QString imagePath = "asdf";

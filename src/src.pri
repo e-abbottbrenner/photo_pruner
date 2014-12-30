@@ -11,7 +11,10 @@ HEADERS += \
     $$PWD/AppModelPtr.h \
     $$PWD/ProjectController.h \
     $$PWD/ImageController.h \
-    $$PWD/TopLevelController.h
+    $$PWD/TopLevelController.h \
+    $$PWD/ImageListFilterModel.h \
+    $$PWD/ImageListFilterModelPtr.h \
+    $$PWD/PruningFilters.h
 
 SOURCES += \
     $$PWD/ProjectImage.cpp \
@@ -21,7 +24,8 @@ SOURCES += \
     $$PWD/AppModel.cpp \
     $$PWD/ProjectController.cpp \
     $$PWD/ImageController.cpp \
-    $$PWD/TopLevelController.cpp
+    $$PWD/TopLevelController.cpp \
+    $$PWD/ImageListFilterModel.cpp
 
 
 !test {
