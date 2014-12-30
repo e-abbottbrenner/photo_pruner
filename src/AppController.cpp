@@ -1,7 +1,7 @@
 #include "AppController.h"
 
 #include "AppModel.h"
-#include "ImageListModel.h"
+#include "ImageListFilterModel.h"
 #include "Project.h"
 
 #include <QDebug>
@@ -21,7 +21,7 @@ AppController::AppController(QObject* parent)
  */
 QAbstractItemModel* AppController::getRawProjectModel() const
 {
-    return appModel()->getProjectModel().data();
+    return appModel()->getFilteredProjectModel().data();
 }
 
 QUrl AppController::getProjectUrl() const

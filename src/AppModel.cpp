@@ -1,10 +1,12 @@
 #include "AppModel.h"
 
+#include "ImageListFilterModel.h"
 #include "ImageListModel.h"
 #include "Project.h"
 
 AppModel::AppModel()
     : projectModel(ImageListModel::createImageListModel())
+    , filteredProjectModel(ImageListFilterModel::createImageListFilterModel(projectModel))
 {
     setCurrentProject(Project::createProject());
 }
@@ -37,4 +39,9 @@ ProjectPtr AppModel::getCurrentProject() const
 ImageListModelPtr AppModel::getProjectModel() const
 {
     return projectModel;
+}
+
+ImageListFilterModelPtr AppModel::getFilteredProjectModel() const
+{
+    return filteredProjectModel;
 }

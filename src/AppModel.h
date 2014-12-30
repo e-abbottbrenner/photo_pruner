@@ -5,6 +5,7 @@
 
 #include "AppModelPtr.h"
 #include "ImageListModelPtr.h"
+#include "ImageListFilterModelPtr.h"
 #include "ProjectPtr.h"
 
 class AppModel : public QObject
@@ -18,6 +19,7 @@ public:
     ProjectPtr getCurrentProject() const;
 
     ImageListModelPtr getProjectModel() const;
+    ImageListFilterModelPtr getFilteredProjectModel() const;
 
 signals:
     void currentProjectChanged(ProjectPtr project);
@@ -28,6 +30,8 @@ private:
     ProjectPtr currentProject;
 
     ImageListModelPtr projectModel;
+    ImageListFilterModelPtr filteredProjectModel;
+
 };
 
 #endif // APPMODEL_H
