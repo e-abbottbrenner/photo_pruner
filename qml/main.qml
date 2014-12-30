@@ -1,8 +1,8 @@
-import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick 2.4
+import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 
-import PhotoPruner.AppModel 1.0
+import PhotoPruner.AppController 1.0
 
 ApplicationWindow {
     id: mainWindow
@@ -25,6 +25,15 @@ ApplicationWindow {
             MenuItem { action: actions.saveAction }
             MenuItem { action: actions.saveAsAction }
             MenuItem { action: actions.importAction }
+        }
+    }
+
+    toolBar: ToolBar {
+        RowLayout {
+            ToolButton { action: actions.openAction }
+            ToolButton { action: actions.saveAction }
+            ToolButton { action: actions.saveAsAction }
+            ToolButton { action: actions.importAction }
         }
     }
 
@@ -62,17 +71,17 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                model: appModel.projectModel
+                model: appController.projectModel
                 keyNavigationWraps: true
                 delegate: imageListDelegate
                 highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
                 focus: true
 
-                onCurrentIndexChanged: appModel.determineCurrentImageUrl(currentIndex)
+                onCurrentIndexChanged: appController.determineCurrentImageUrl(currentIndex)
             }
 
             ImagePreviewPanel {
-                imageSource: appModel.currentImageUrl
+                imageSource: appController.currentImageUrl
                 color: "grey"
 
                 Layout.fillHeight: true

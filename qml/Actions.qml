@@ -1,15 +1,15 @@
-import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick 2.4
+import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 
-import PhotoPruner.AppModel 1.0
+import PhotoPruner.AppController 1.0
 
 Item {
     property Action saveAction: Action {
         text: "&Save Project"
         shortcut: StandardKey.Save
 
-        onTriggered: appModel.saveProject(appModel.projectUrl)
+        onTriggered: appController.saveProject(appController.projectUrl)
     }
 
     property Action saveAsAction: Action {
@@ -21,7 +21,7 @@ Item {
             selectExisting: false
             nameFilters: ["Json files (*.json)"]
 
-            onAccepted: appModel.saveProject(fileUrl)
+            onAccepted: appController.saveProject(fileUrl)
         }
 
         onTriggered: saveAsDialog.open()
@@ -35,7 +35,7 @@ Item {
             title: "Open..."
             nameFilters: ["Json files (*.json)"]
 
-            onAccepted: appModel.openProject(fileUrl)
+            onAccepted: appController.openProject(fileUrl)
         }
 
         onTriggered: openDialog.open()
@@ -50,7 +50,7 @@ Item {
             selectMultiple: true
             nameFilters: ["Jpg files (*.jpg)", "Jpeg files (*.jpeg)", "Png files (*.png)"]
 
-            onAccepted: appModel.importImages(fileUrls)
+            onAccepted: appController.importImages(fileUrls)
         }
 
         onTriggered: importDialog.open()

@@ -6,12 +6,15 @@ HEADERS += \
     $$PWD/Project.h \
     $$PWD/ImageListModel.h \
     $$PWD/ImageListModelPtr.h \
-    $$PWD/AppModel.h
+    $$PWD/AppController.h \
+    $$PWD/AppModel.h \
+    $$PWD/AppModelPtr.h
 
 SOURCES += \
     $$PWD/ProjectImage.cpp \
     $$PWD/Project.cpp \
     $$PWD/ImageListModel.cpp \
+    $$PWD/AppController.cpp \
     $$PWD/AppModel.cpp
 
 

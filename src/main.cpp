@@ -1,3 +1,4 @@
+#include "AppController.h"
 #include "AppModel.h"
 
 #include <QApplication>
@@ -13,14 +14,17 @@ int main(int argc, char** argv)
     qRegisterMetaType<QAbstractItemModel*>();
 
     // register types to make qml happy
-    qmlRegisterType<AppModel>("PhotoPruner.AppModel", 1, 0, "AppModel");
+    qmlRegisterType<AppController>("PhotoPruner.AppController", 1, 0, "AppController");
 
     QQmlApplicationEngine engine;
 
-    AppModel *appModel = new AppModel(&app);
+    AppModelPtr appModel = AppModel::createAppModel();
+
+    AppController *appController = new AppController(&app);
+    appController->setAppModel(appModel);
 
     QQmlContext *context = engine.rootContext();
-    context->setContextProperty("appModel", appModel);
+    context->setContextProperty("appController", appController);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 
