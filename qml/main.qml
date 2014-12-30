@@ -55,6 +55,9 @@ ApplicationWindow {
                 id: imageListDelegate
 
                 Item {
+                    property string sourcePath: model.sourcePath
+                    property url sourceUrl: model.sourceUrl
+
                     width: 180; height: 40
                     Column {
                         Text { text: '<b>Path:</b> ' + display }
@@ -81,11 +84,13 @@ ApplicationWindow {
                 highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
                 focus: true
 
-                onCurrentIndexChanged: imageController.setCurrentIndex(currentIndex)
+                onCurrentItemChanged: {
+                    imageController.setImage(currentItem.sourcePath)
+                }
             }
 
             ImagePreviewPanel {
-                imageSource: imageController.currentImageUrl
+                imageSource: listView.currentItem? listView.currentItem.sourceUrl : ""
                 color: "grey"
 
                 Layout.fillHeight: true

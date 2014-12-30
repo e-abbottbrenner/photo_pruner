@@ -1,30 +1,20 @@
 #include "ImageController.h"
 
-#include "AppModel.h"
-#include "ImageListModel.h"
+#include "Project.h"
+#include "ProjectImage.h"
+
+#include <QDebug>
 
 ImageController::ImageController(QObject *parent) : QObject(parent)
 {
 }
 
-
-QUrl ImageController::getCurrentImageUrl() const
+void ImageController::setImage(const QString &imageSourcePath)
 {
-    return currentImageUrl;
-}
+    image = currentProject()->getImage(imageSourcePath);
 
-/*!
- * \brief ImageController::setCurrentIndex sets the idnex of the current image
- * \param currentIndex
- */
-void ImageController::setCurrentIndex(int currentIndex)
-{
-    QUrl newImageUrl = appModel()->getProjectModel()->data(appModel()->getProjectModel()->index(currentIndex), ImageListModel::UrlRole).toUrl();
-
-    if(newImageUrl != currentImageUrl)
+    if(image)
     {
-        currentImageUrl = newImageUrl;
-
-        emit currentImageUrlChanged(newImageUrl);
+        qDebug() << "Image controller set to use image" << imageSourcePath;
     }
 }

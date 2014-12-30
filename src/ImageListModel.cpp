@@ -67,6 +67,8 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const
         return QFileInfo(image->getImagePath()).fileName();
     case Qt::DecorationRole:
         return QPixmap(image->getImagePath());
+    case PathRole:
+        return image->getImagePath();
     case UrlRole:
         return QUrl::fromLocalFile(image->getImagePath());
     default:
@@ -85,6 +87,7 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
 {
     QHash<int, QByteArray> names = QAbstractListModel::roleNames();
 
+    names.insert(PathRole, "sourcePath");
     names.insert(UrlRole, "sourceUrl");
 
     return names;

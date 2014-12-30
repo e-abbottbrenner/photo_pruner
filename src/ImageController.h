@@ -5,26 +5,19 @@
 
 #include "TopLevelController.h"
 
-#include <QUrl>
+#include "ProjectImagePtr.h"
 
 class ImageController : public QObject, public TopLevelController
 {
     Q_OBJECT
 
-    Q_PROPERTY(QUrl currentImageUrl READ getCurrentImageUrl NOTIFY currentImageUrlChanged)
-
 public:
     explicit ImageController(QObject *parent = 0);
 
-    QUrl getCurrentImageUrl() const;
-
-    Q_INVOKABLE void setCurrentIndex(int currentIndex);
-
-signals:
-    void currentImageUrlChanged(QUrl url);
+    Q_INVOKABLE void setImage(const QString& imageSourcePath);
 
 private:
-    QUrl currentImageUrl;
+    ProjectImagePtr image;
 };
 
 #endif // CURRENTIMAGECONTROLLER_H

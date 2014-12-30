@@ -12,7 +12,8 @@ class ImageListModel : public QAbstractListModel
 public:
     enum CustomRoles
     {
-        UrlRole = Qt::UserRole
+        PathRole = Qt::UserRole,
+        UrlRole
     };
 
     static ImageListModelPtr createImageListModel();
