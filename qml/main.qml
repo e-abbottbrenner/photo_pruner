@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.0
 
 import PhotoPruner.Controllers 1.0
 //import PhotoPruner.Enums 1.0
@@ -8,10 +9,14 @@ import PhotoPruner.Controllers 1.0
 ApplicationWindow {
     id: mainWindow
     visible: true
+
     width: 800
     height: 600
     minimumWidth: 800
     minimumHeight: 600
+
+    visibility: Window.Maximized
+
     color: "white"
 
     Actions {
