@@ -38,6 +38,10 @@ ApplicationWindow {
 
             MenuItem { action: actions.flagForPruningAction }
             MenuItem { action: actions.unflagForPruningAction }
+
+            MenuSeparator {}
+
+            MenuItem { action: actions.removeFromProjectAction }
         }
     }
 
@@ -48,8 +52,10 @@ ApplicationWindow {
             ToolButton { action: actions.saveAction }
             ToolButton { action: actions.saveAsAction }
             ToolButton { action: actions.importAction }
+            ToolButton { action: actions.deletePrunedImagesAction }
             ToolButton { action: actions.flagForPruningAction }
             ToolButton { action: actions.unflagForPruningAction }
+            ToolButton { action: actions.removeFromProjectAction }
         }
     }
 

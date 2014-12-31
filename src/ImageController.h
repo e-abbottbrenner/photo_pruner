@@ -17,6 +17,7 @@ public:
     Q_INVOKABLE void setImage(const QString& imageSourcePath);
 
     Q_INVOKABLE void setWillBePruned(bool prune);
+    Q_INVOKABLE void removeFromProject();
 
 private:
     ProjectImagePtr image;

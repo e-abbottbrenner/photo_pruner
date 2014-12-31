@@ -93,4 +93,11 @@ Item {
 
         onTriggered: imageController.setWillBePruned(false);
     }
+
+    property Action removeFromProjectAction: Action {
+        text:"&Remove Image"
+        shortcut: "Ctrl+R"
+
+        onTriggered: imageController.removeFromProject()
+    }
 }

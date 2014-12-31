@@ -47,3 +47,12 @@ TEST_F(ImageControllerTest, testSetWillBePruned)
 
     EXPECT_FALSE(image->getWillBePruned());
 }
+
+TEST_F(ImageControllerTest, testRemoveFromProject)
+{
+    EXPECT_TRUE(!appModel->getCurrentProject()->getImage(image->getImagePath()).isNull());
+
+    controller->removeFromProject();
+
+    EXPECT_TRUE(appModel->getCurrentProject()->getImage(image->getImagePath()).isNull());
+}

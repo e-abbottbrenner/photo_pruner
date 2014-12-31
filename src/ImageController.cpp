@@ -26,3 +26,8 @@ void ImageController::setWillBePruned(bool prune)
         image->setWillBePruned(prune);
     }
 }
+
+void ImageController::removeFromProject()
+{
+    currentProject()->removeProjectImage(image->getImagePath());
+}
