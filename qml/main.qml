@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 
 import PhotoPruner.Controllers 1.0
-//import PhotoPruner.Enums 1.0
 
 ApplicationWindow {
     id: mainWindow

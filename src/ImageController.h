@@ -19,6 +19,9 @@ public:
     Q_INVOKABLE void setWillBePruned(bool prune);
     Q_INVOKABLE void removeFromProject();
 
+    Q_INVOKABLE void addTag(const QString& tag);
+    Q_INVOKABLE void removeTag(const QString& tag);
+
 private:
     ProjectImagePtr image;
 };

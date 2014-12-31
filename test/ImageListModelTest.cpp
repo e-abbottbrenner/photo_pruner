@@ -51,8 +51,22 @@ TEST_F(ImageListModelTest, testData)
 {
     ASSERT_EQ(2, model->rowCount(QModelIndex()));
 
+    ProjectImagePtr blahImage = project->getImage("blah");
+    ProjectImagePtr blehImage = project->getImage("bleh");
+
+    blahImage->addImageTag("tag1");
+    blahImage->addImageTag("tag2");
+
+    blehImage->setWillBePruned(true);
+
     EXPECT_EQ("blah", model->data(model->index(0, 0), Qt::DisplayRole).toString());
     EXPECT_EQ("bleh", model->data(model->index(1, 0), Qt::DisplayRole).toString());
+
+    EXPECT_EQ(false, model->data(model->index(0, 0), ImageListModel::PrunedRole).toBool());
+    EXPECT_EQ(true, model->data(model->index(1, 0), ImageListModel::PrunedRole).toBool());
+
+    EXPECT_EQ(2, model->data(model->index(0, 0), ImageListModel::TagsRole).toStringList().size());
+    EXPECT_EQ(0, model->data(model->index(1, 0), ImageListModel::TagsRole).toStringList().size());
 }
 
 TEST_F(ImageListModelTest, testRemoveData)

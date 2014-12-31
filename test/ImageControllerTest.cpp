@@ -56,3 +56,27 @@ TEST_F(ImageControllerTest, testRemoveFromProject)
 
     EXPECT_TRUE(appModel->getCurrentProject()->getImage(image->getImagePath()).isNull());
 }
+
+TEST_F(ImageControllerTest, testAddTag)
+{
+    QString newTag = "tag";
+
+    EXPECT_FALSE(image->getImageTags().contains(newTag));
+
+    controller->addTag(newTag);
+
+    EXPECT_TRUE(image->getImageTags().contains(newTag));
+}
+
+TEST_F(ImageControllerTest, testRemoveTag)
+{
+    QString tag = "tag";
+
+    image->addImageTag(tag);
+
+    EXPECT_TRUE(image->getImageTags().contains(tag));
+
+    controller->removeTag(tag);
+
+    EXPECT_FALSE(image->getImageTags().contains(tag));
+}

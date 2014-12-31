@@ -13,7 +13,9 @@ public:
     enum CustomRoles
     {
         PathRole = Qt::UserRole,
-        UrlRole
+        UrlRole,
+        PrunedRole,
+        TagsRole
     };
 
     static ImageListModelPtr createImageListModel();

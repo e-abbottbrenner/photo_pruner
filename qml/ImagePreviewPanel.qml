@@ -93,7 +93,6 @@ Rectangle {
 
             onSourceChanged: {
                 image.scale = 1.0
-                console.log("source changed to" + source)
             }
         }
     }

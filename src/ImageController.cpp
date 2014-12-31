@@ -12,11 +12,6 @@ ImageController::ImageController(QObject *parent) : QObject(parent)
 void ImageController::setImage(const QString &imageSourcePath)
 {
     image = currentProject()->getImage(imageSourcePath);
-
-    if(image)
-    {
-        qDebug() << "Image controller set to use image" << imageSourcePath;
-    }
 }
 
 void ImageController::setWillBePruned(bool prune)
@@ -30,4 +25,14 @@ void ImageController::setWillBePruned(bool prune)
 void ImageController::removeFromProject()
 {
     currentProject()->removeProjectImage(image->getImagePath());
+}
+
+void ImageController::addTag(const QString& tag)
+{
+    image->addImageTag(tag);
+}
+
+void ImageController::removeTag(const QString& tag)
+{
+    image->removeImageTag(tag);
 }

@@ -62,6 +62,8 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const
 
     assert(image);
 
+    QList<QString> tags;
+
     switch(role)
     {
     case Qt::DisplayRole:
@@ -72,6 +74,12 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const
         return image->getImagePath();
     case UrlRole:
         return QUrl::fromLocalFile(image->getImagePath());
+    case PrunedRole:
+        return image->getWillBePruned();
+    case TagsRole:
+        tags = image->getImageTags().toList();
+        qSort(tags);
+        return tags;
     default:
         break;
     }
@@ -90,6 +98,8 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
 
     names.insert(PathRole, "sourcePath");
     names.insert(UrlRole, "sourceUrl");
+    names.insert(PrunedRole, "pruned");
+    names.insert(TagsRole, "tags");
 
     return names;
 }
