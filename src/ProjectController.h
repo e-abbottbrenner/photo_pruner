@@ -15,6 +15,7 @@ public:
     explicit ProjectController(QObject *parent = 0);
 
     Q_INVOKABLE void importImages(const QList<QUrl>& imageUrls);
+    Q_INVOKABLE void deletePrunedImages();
 };
 
 #endif // PROJECTCONTROLLER_H

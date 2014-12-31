@@ -23,3 +23,11 @@ void ProjectController::importImages(const QList<QUrl>& imageUrls)
         ProjectUtils::addImagesToProject(currentProject(), systemPaths);
     }
 }
+
+void ProjectController::deletePrunedImages()
+{
+    if(currentProject())
+    {
+        ProjectUtils::pruneProject(currentProject());
+    }
+}

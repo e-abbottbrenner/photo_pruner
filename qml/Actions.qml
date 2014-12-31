@@ -63,6 +63,23 @@ Item {
         onTriggered: importDialog.open()
     }
 
+    property Action deletePrunedImagesAction : Action {
+        text: "Delete Pruned Images"
+
+        property MessageDialog confirmDeletionDialog : MessageDialog {
+            title: "Delete?"
+            text: "This will premanently delete all pruned images from your file system.  Do you want to continue?"
+
+            standardButtons: StandardButton.Yes | StandardButton.No
+
+            onYes: projectController.deletePrunedImages()
+        }
+
+        onTriggered: {
+            confirmDeletionDialog.open()
+        }
+    }
+
     property Action flagForPruningAction: Action {
         text: "&Prune Image"
         shortcut: "Ctrl+D"
