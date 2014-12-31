@@ -1,6 +1,7 @@
 #include "TopLevelControllerFixture.h"
 
 #include "AppController.h"
+#include "ImageListFilterModel.h"
 #include "Project.h"
 #include "ResourcePath.h"
 
@@ -85,4 +86,13 @@ TEST_F(AppControllerTest, testSaveProject)
     ASSERT_EQ(1, urlChangedSpy.size());
 
     EXPECT_EQ(QUrl::fromLocalFile(fileInfo.absoluteFilePath()), urlChangedSpy[0][0].toUrl());
+}
+
+TEST_F(AppControllerTest, testSetPruningFilter)
+{
+    EXPECT_EQ(PruningFilters::ShowAll, appModel->getFilteredProjectModel()->getPruningFilter());
+
+    controller->setPruningFilter(PruningFilters::ShowPruned);
+
+    EXPECT_EQ(PruningFilters::ShowPruned, appModel->getFilteredProjectModel()->getPruningFilter());
 }

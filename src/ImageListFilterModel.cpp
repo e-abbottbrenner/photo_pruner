@@ -7,7 +7,7 @@
 #include <cassert>
 
 ImageListFilterModel::ImageListFilterModel(ImageListModelPtr baseModel)
-    : baseModel(baseModel)
+    : baseModel(baseModel), pruningFilter(PruningFilters::ShowAll)
 {
     assert(baseModel);
 
