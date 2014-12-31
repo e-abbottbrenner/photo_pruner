@@ -30,6 +30,13 @@ ApplicationWindow {
             MenuSeparator{}
             MenuItem { action: actions.importAction }
         }
+
+        Menu {
+            title: "&Edit"
+
+            MenuItem { action: actions.flagForPruningAction }
+            MenuItem { action: actions.unflagForPruningAction }
+        }
     }
 
     toolBar: ToolBar {
@@ -39,6 +46,8 @@ ApplicationWindow {
             ToolButton { action: actions.saveAction }
             ToolButton { action: actions.saveAsAction }
             ToolButton { action: actions.importAction }
+            ToolButton { action: actions.flagForPruningAction }
+            ToolButton { action: actions.unflagForPruningAction }
         }
     }
 
@@ -106,7 +115,8 @@ ApplicationWindow {
             }
 
             ImagePreviewPanel {
-                imageSource: listView.currentItem? listView.currentItem.sourceModel.sourceUrl : ""
+                imageSource: listView.currentItem? listView.currentItem.sourceModel?
+                                                       listView.currentItem.sourceModel.sourceUrl : "" : ""
                 color: "grey"
 
                 Layout.fillHeight: true

@@ -5,6 +5,7 @@
 #include "ProjectImage.h"
 
 #include <cassert>
+#include <QDebug>
 
 ImageListFilterModel::ImageListFilterModel(ImageListModelPtr baseModel)
     : baseModel(baseModel), pruningFilter(PruningFilters::ShowAll)

@@ -62,4 +62,18 @@ Item {
 
         onTriggered: importDialog.open()
     }
+
+    property Action flagForPruningAction: Action {
+        text: "&Prune Image"
+        shortcut: "Ctrl+D"
+
+        onTriggered: imageController.setWillBePruned(true)
+    }
+
+    property Action unflagForPruningAction: Action {
+        text: "&Keep Image"
+        shortcut: "Ctrl+K"
+
+        onTriggered: imageController.setWillBePruned(false);
+    }
 }

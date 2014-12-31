@@ -23,16 +23,20 @@ ComboBox {
     }
 
     onActivated: {
-        var elementId = model.get(currentIndex).elementId
+        var elementId = model.get(index).elementId
+
+        var pruningFilter
 
         if(elementId === "showAll") {
-            appController.pruningFilter = PruningFilters.ShowAll
+            pruningFilter = PruningFilters.ShowAll
         }
         else if(elementId === "showUnpruned") {
-            appController.pruningFilter = PruningFilters.ShowUnpruned
+            pruningFilter = PruningFilters.ShowUnpruned
         }
         else if(elementId === "showPruned") {
-            appController.pruningFilter = PruningFilters.ShowPruned
+            pruningFilter = PruningFilters.ShowPruned
         }
+
+        appController.pruningFilter = pruningFilter
     }
 }

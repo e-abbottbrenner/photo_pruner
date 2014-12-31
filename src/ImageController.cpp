@@ -18,3 +18,11 @@ void ImageController::setImage(const QString &imageSourcePath)
         qDebug() << "Image controller set to use image" << imageSourcePath;
     }
 }
+
+void ImageController::setWillBePruned(bool prune)
+{
+    if(image)
+    {
+        image->setWillBePruned(prune);
+    }
+}
