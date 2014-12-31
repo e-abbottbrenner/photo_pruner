@@ -5,6 +5,7 @@
 
 #include "AppModelPtr.h"
 #include "ImageListModelPtr.h"
+#include "ImageListFilterModelPtr.h"
 #include "ProjectPtr.h"
 
 class TopLevelController
@@ -15,6 +16,8 @@ public:
 protected:
     AppModelPtr appModel() const;
     ProjectPtr currentProject() const;
+    ImageListModelPtr projectModel() const;
+    ImageListFilterModelPtr filteredProjectModel() const;
 
 private:
     AppModelPtr appModelPrivate;

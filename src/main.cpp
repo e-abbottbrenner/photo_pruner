@@ -2,6 +2,7 @@
 #include "AppModel.h"
 #include "ImageController.h"
 #include "ProjectController.h"
+#include "PruningFilters.h"
 
 #include <QApplication>
 #include <QQmlApplicationEngine>
@@ -17,8 +18,10 @@ int main(int argc, char** argv)
 
     // register types to make qml happy
     qmlRegisterType<AppController>("PhotoPruner.Controllers", 1, 0, "AppController");
-    qmlRegisterType<AppController>("PhotoPruner.Controllers", 1, 0, "ImageController");
-    qmlRegisterType<AppController>("PhotoPruner.Controllers", 1, 0, "ProjectController");
+    qmlRegisterType<ImageController>("PhotoPruner.Controllers", 1, 0, "ImageController");
+    qmlRegisterType<ProjectController>("PhotoPruner.Controllers", 1, 0, "ProjectController");
+
+    qmlRegisterType<PruningFilters>("PhotoPruner.Enums", 1, 0, "PruningFilters");
 
     QQmlApplicationEngine engine;
 

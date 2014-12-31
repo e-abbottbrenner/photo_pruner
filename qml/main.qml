@@ -3,6 +3,7 @@ import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 
 import PhotoPruner.Controllers 1.0
+//import PhotoPruner.Enums 1.0
 
 ApplicationWindow {
     id: mainWindow
@@ -65,26 +66,42 @@ ApplicationWindow {
                     MouseArea {
                         anchors.fill: parent
 
-                        onClicked: listView.currentIndex = index
+                        onClicked: {
+                            listView.currentIndex = index
+                        }
                     }
                 }
 
             }
 
-            ListView {
-                id: listView
-
+            // qml equivalent to "wrap it in widget", "wrap it in an item!"
+            Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                model: appController.projectModel
-                keyNavigationWraps: true
-                delegate: imageListDelegate
-                highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-                focus: true
+                ColumnLayout {
+                    anchors.fill: parent
 
-                onCurrentItemChanged: {
-                    imageController.setImage(currentItem.sourceModel.sourcePath)
+                    PruningFilterComboBox {
+                        id: pruningFilterCombo
+                    }
+
+                    ListView {
+                        id: listView
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+
+                        model: appController.projectModel
+                        keyNavigationWraps: true
+                        delegate: imageListDelegate
+                        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+                        focus: true
+
+                        onCurrentItemChanged: {
+                            imageController.setImage(currentItem.sourceModel.sourcePath)
+                        }
+                    }
                 }
             }
 

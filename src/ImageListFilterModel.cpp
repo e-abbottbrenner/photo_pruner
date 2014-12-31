@@ -32,6 +32,11 @@ void ImageListFilterModel::setPruningFilter(PruningFilter filter)
     }
 }
 
+PruningFilter ImageListFilterModel::getPruningFilter() const
+{
+    return pruningFilter;
+}
+
 bool ImageListFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex&) const
 {
     ProjectPtr project = baseModel->getProject();

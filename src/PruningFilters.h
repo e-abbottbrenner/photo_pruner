@@ -1,15 +1,22 @@
 #ifndef PRUNINGFILTERS
 #define PRUNINGFILTERS
 
-namespace PruningFilters
+#include <QObject>
+
+class PruningFilters : public QObject
 {
+    Q_OBJECT
+
+    Q_ENUMS(PruningFilter)
+
+public:
     enum PruningFilter
     {
         ShowAll,
         ShowPruned,
         ShowUnpruned
     };
-}
+};
 
 typedef PruningFilters::PruningFilter PruningFilter;
 

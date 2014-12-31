@@ -3,5 +3,6 @@
         <file>qml/main.qml</file>
         <file>qml/Actions.qml</file>
         <file>qml/ImagePreviewPanel.qml</file>
+        <file>qml/PruningFilterComboBox.qml</file>
     </qresource>
 </RCC>

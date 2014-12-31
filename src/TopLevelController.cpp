@@ -16,3 +16,13 @@ ProjectPtr TopLevelController::currentProject() const
 {
     return appModel()->getCurrentProject();
 }
+
+ImageListModelPtr TopLevelController::projectModel() const
+{
+    return appModel()->getProjectModel();
+}
+
+ImageListFilterModelPtr TopLevelController::filteredProjectModel() const
+{
+    return appModel()->getFilteredProjectModel();
+}

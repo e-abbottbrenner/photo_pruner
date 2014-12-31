@@ -29,6 +29,25 @@ QUrl AppController::getProjectUrl() const
     return currentProjectUrl;
 }
 
+PruningFilter AppController::getPruningFilter() const
+{
+    return filteredProjectModel()->getPruningFilter();
+}
+
+/*!
+ * \brief AppController::setPruningFilter sets the prunning filter on the project model
+ * \param filter
+ */
+void AppController::setPruningFilter(PruningFilter filter)
+{
+    if(filter != filteredProjectModel()->getPruningFilter())
+    {
+        filteredProjectModel()->setPruningFilter(filter);
+
+        emit pruningFilterChanged(filter);
+    }
+}
+
 /*!
  * \brief AppController::newProject does what you think
  */
