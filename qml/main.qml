@@ -108,8 +108,16 @@ ApplicationWindow {
                 ColumnLayout {
                     anchors.fill: parent
 
-                    PruningFilterComboBox {
-                        id: pruningFilterCombo
+                    Row {
+                        PruningFilterComboBox {
+                            id: pruningFilterCombo
+                        }
+
+                        TextField {
+                            id: tagFilterField
+
+                            onTextChanged: appController.setTagFilter(text)
+                        }
                     }
 
                     ListView {

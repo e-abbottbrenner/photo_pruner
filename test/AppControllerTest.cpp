@@ -96,3 +96,12 @@ TEST_F(AppControllerTest, testSetPruningFilter)
 
     EXPECT_EQ(PruningFilters::ShowPruned, appModel->getFilteredProjectModel()->getPruningFilter());
 }
+
+TEST_F(AppControllerTest, testSetTagFilter)
+{
+    EXPECT_EQ(QString(), appModel->getFilteredProjectModel()->getTagFilter());
+
+    controller->setTagFilter("test");
+
+    EXPECT_EQ("test", appModel->getFilteredProjectModel()->getTagFilter());
+}

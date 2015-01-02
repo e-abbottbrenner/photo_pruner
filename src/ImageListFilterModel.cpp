@@ -38,6 +38,20 @@ PruningFilter ImageListFilterModel::getPruningFilter() const
     return pruningFilter;
 }
 
+QString ImageListFilterModel::getTagFilter() const
+{
+    return tagFilterSubstring;
+}
+
+void ImageListFilterModel::setTagFilter(const QString& tagSubstring)
+{
+    if(tagFilterSubstring != tagSubstring)
+    {
+        tagFilterSubstring = tagSubstring;
+        invalidateFilter();
+    }
+}
+
 bool ImageListFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex&) const
 {
     ProjectPtr project = baseModel->getProject();
@@ -54,11 +68,11 @@ bool ImageListFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex&) c
     {
     case PruningFilters::ShowPruned:
         // will be pruned so show
-        pruningFilterOk = true == image->getWillBePruned();
+        pruningFilterOk = image->getWillBePruned();
         break;
     case PruningFilters::ShowUnpruned:
         // not to be pruned so show
-        pruningFilterOk = false == image->getWillBePruned();
+        pruningFilterOk = !image->getWillBePruned();
         break;
     case PruningFilters::ShowAll:
     default:
@@ -66,6 +80,23 @@ bool ImageListFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex&) c
         break;
     }
 
-    // TODO: check tags later
-    return pruningFilterOk;
+    bool tagMatch = false;
+
+    if(tagFilterSubstring.isEmpty())
+    {
+        tagMatch = true;
+    }
+    else
+    {
+        foreach(QString tag, image->getImageTags())
+        {
+            if(tag.toLower().contains(tagFilterSubstring.toLower()))
+            {// don't be case sensitive, it's annoying
+                tagMatch = true;
+                break;
+            }
+        }
+    }
+
+    return pruningFilterOk && tagMatch;
 }

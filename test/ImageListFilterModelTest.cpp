@@ -59,7 +59,27 @@ TEST_F(ImageListFilterModelTest, testPruningFilters)
     EXPECT_EQ(unprunedImage->getImagePath(), filterModel->data(filterModel->index(0, 0), ImageListModel::PathRole).toString());
 }
 
-TEST_F(ImageListFilterModelTest, testDynamicUpdate)
+TEST_F(ImageListFilterModelTest, testTagFilter)
+{
+    QString tag = "Tag";
+
+    unprunedImage->addImageTag(tag);
+
+    EXPECT_EQ(2, filterModel->rowCount());
+
+    filterModel->setTagFilter("ta");
+
+    EXPECT_EQ(1, filterModel->rowCount());
+
+    // we tagged unpruned
+    EXPECT_EQ(unprunedImage->getImagePath(), filterModel->data(filterModel->index(0, 0), ImageListModel::PathRole).toString());
+
+    filterModel->setTagFilter("");
+
+    EXPECT_EQ(2, filterModel->rowCount());
+}
+
+TEST_F(ImageListFilterModelTest, testDynamicUpdatePruningFilter)
 {
     filterModel->setPruningFilter(PruningFilters::ShowUnpruned);
 
@@ -69,4 +89,23 @@ TEST_F(ImageListFilterModelTest, testDynamicUpdate)
 
     // now that the pruned image is updated, it should go in the pruned model
     EXPECT_EQ(2, filterModel->rowCount());
+}
+
+TEST_F(ImageListFilterModelTest, testDynamicUpdateTagFilter)
+{
+    QString tag = "tag";
+    QString tagtag = "tagtag";
+
+    filterModel->setTagFilter(tag);
+
+    EXPECT_EQ(0, filterModel->rowCount());
+
+    unprunedImage->addImageTag(tag);
+
+    EXPECT_EQ(1, filterModel->rowCount());
+
+    prunedImage->addImageTag(tagtag);
+
+    EXPECT_EQ(2, filterModel->rowCount());
+
 }

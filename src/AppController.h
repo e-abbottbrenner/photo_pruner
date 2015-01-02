@@ -41,6 +41,8 @@ public:
     PruningFilter getPruningFilter() const;
     void setPruningFilter(PruningFilters::PruningFilter filter);
 
+    Q_INVOKABLE void setTagFilter(const QString& tagFilter);
+
     Q_INVOKABLE void newProject();
     Q_INVOKABLE void openProject(const QUrl& projectUrl);
     Q_INVOKABLE void saveProject(const QUrl& projectUrl);

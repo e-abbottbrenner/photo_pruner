@@ -15,6 +15,9 @@ public:
     void setPruningFilter(PruningFilter filter);
     PruningFilter getPruningFilter() const;
 
+    QString getTagFilter() const;
+    void setTagFilter(const QString& tagSubstring);
+
 protected:
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &) const;
 
@@ -24,6 +27,7 @@ private:
     ImageListModelPtr baseModel;
 
     PruningFilter pruningFilter;
+    QString tagFilterSubstring;
 };
 
 #endif // IMAGELISTFILTERMODEL_H

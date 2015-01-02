@@ -49,6 +49,15 @@ void AppController::setPruningFilter(PruningFilter filter)
 }
 
 /*!
+ * \brief AppController::setTagFilter used to set the tag filter used to filter images
+ * \param tagFilter
+ */
+void AppController::setTagFilter(const QString& tagFilter)
+{
+    filteredProjectModel()->setTagFilter(tagFilter);
+}
+
+/*!
  * \brief AppController::newProject does what you think
  */
 void AppController::newProject()
