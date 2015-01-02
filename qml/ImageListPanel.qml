@@ -4,54 +4,107 @@ import QtQuick.Controls 1.3
 
 import PhotoPruner.Controllers 1.0
 
-// qml equivalent to "wrap it in widget", "wrap it in an item!"
-Item {
-    Component {
-        id: imageListDelegate
+Rectangle {
+    width: filterControlsRow.width
 
-        Item {
-            property variant sourceModel: model
+    property int minimumWidth: filterControlsRow.width + mainColumn.anchors.leftMargin + mainColumn.anchors.rightMargin
 
-            width: 180; height: 40
-            Column {
-                Text { text: '<b>Path:</b> ' + display }
-            }
+    property url currentImageUrl: listView.currentItem? listView.currentItem.sourceModel?
+                                                            listView.currentItem.sourceModel.sourceUrl : "" : ""
 
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    listView.currentIndex = index
-                }
-            }
-        }
-    }
+    color: "#c8c8c8"
 
     ColumnLayout {
+        id: mainColumn
+
         anchors.fill: parent
+        anchors.margins: 5
 
         Row {
-            PruningFilterComboBox {
-                id: pruningFilterCombo
+            id: filterControlsRow
+
+            spacing: 10
+
+            Column {
+                id: pruningFilterColumn
+
+                spacing: 5
+
+                Text {
+                    text: "Pruning filter"
+                }
+
+                PruningFilterComboBox {
+                    id: pruningFilterCombo
+                }
             }
 
-            TextField {
-                id: tagFilterField
+            Column {
+                id: tagFilterColumn
 
-                onTextChanged: appController.setTagFilter(text)
+                spacing: 5
+
+                Text {
+                    text: "Tag filter"
+                }
+
+                TextField {
+                    id: tagFilterField
+
+                    onTextChanged: appController.setTagFilter(text)
+                }
             }
         }
 
         ListView {
             id: listView
 
-            Layout.fillHeight: true
+            clip: true
+
             Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            spacing: 2
 
             model: appController.projectModel
             keyNavigationWraps: true
-            delegate: imageListDelegate
-            highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+
+            delegate: Component {
+                Item {
+                    property variant sourceModel: model
+
+                    width: listView.width
+                    height: 20
+
+                    Rectangle {
+                        anchors.fill: parent
+
+                        color: "transparent"
+                        border.color: "#c0c0c0"
+                        border.width: 1
+
+                        radius: 5
+
+                        Text {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: pruned? "red" : "black"
+                            text: display
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            listView.currentIndex = index
+                        }
+                    }
+                }
+            }
+
+            highlightMoveDuration: 0
+            highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
             focus: true
 
             onCurrentItemChanged: {
@@ -59,7 +112,4 @@ Item {
             }
         }
     }
-
-    property url currentImageUrl: listView.currentItem? listView.currentItem.sourceModel?
-                                                            listView.currentItem.sourceModel.sourceUrl : "" : ""
 }

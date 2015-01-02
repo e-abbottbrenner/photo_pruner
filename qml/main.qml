@@ -71,27 +71,21 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
 
-        color: "blue"
-
-        RowLayout {
-            spacing: 0
+        SplitView {
+            orientation: Qt.Horizontal
 
             anchors.fill: parent
 
             ImageListPanel {
                 id: listPanel
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.minimumWidth: minimumWidth
             }
 
             ImagePreviewPanel {
                 imageSource: listPanel.currentImageUrl
 
                 color: "grey"
-
-                Layout.fillHeight: true
-                Layout.fillWidth: true
             }
         }
     }
