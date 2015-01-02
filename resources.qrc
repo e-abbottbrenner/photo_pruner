@@ -5,5 +5,6 @@
         <file>qml/ImagePreviewPanel.qml</file>
         <file>qml/PruningFilterComboBox.qml</file>
         <file>qml/TagEditorDialog.qml</file>
+        <file>qml/ImageListPanel.qml</file>
     </qresource>
 </RCC>
