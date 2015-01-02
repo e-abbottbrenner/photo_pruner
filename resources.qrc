@@ -4,5 +4,6 @@
         <file>qml/Actions.qml</file>
         <file>qml/ImagePreviewPanel.qml</file>
         <file>qml/PruningFilterComboBox.qml</file>
+        <file>qml/TagEditorDialog.qml</file>
     </qresource>
 </RCC>

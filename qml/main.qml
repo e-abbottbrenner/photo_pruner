@@ -45,6 +45,10 @@ ApplicationWindow {
 
             MenuSeparator {}
 
+            MenuItem { action: actions.editTagsAction }
+
+            MenuSeparator {}
+
             MenuItem { action: actions.removeFromProjectAction }
         }
     }
@@ -59,6 +63,7 @@ ApplicationWindow {
             ToolButton { action: actions.deletePrunedImagesAction }
             ToolButton { action: actions.flagForPruningAction }
             ToolButton { action: actions.unflagForPruningAction }
+            ToolButton { action: actions.editTagsAction }
             ToolButton { action: actions.removeFromProjectAction }
         }
     }

@@ -6,10 +6,10 @@ import QtQuick.Layouts 1.1
 import PhotoPruner.Controllers 1.0
 
 Dialog {
-    property list<string> tags
+    property var tags: imageController.tags
 
-    ColumnLayout {
-        RowLayout {
+    Column {
+        Row {
             TextField {
                 id: newTagText
             }
@@ -18,28 +18,33 @@ Dialog {
                 text: "Add Tag"
 
                 onClicked: {
-                    // TODO call controller
-//                    imageController.
+                    imageController.addTag(newTagText.text)
                 }
             }
         }
 
-        RowLayout {
-            ComboBox {
+        Row {
+            ListView {
                 id: tagRemovalComboBox
                 model: tags
-            }
 
-            Button {
-                text: "Remove Tag"
+                width:200
+                height: 200
 
-                onClicked:{
-                    // TODO: call controller
-//                    imageController.
+                delegate: Component {
+                    Row {
+                        Text {
+                            text: modelData
+                        }
+
+                        Button {
+                            text: "x"
+
+                            onClicked: imageController.removeTag(modelData)
+                        }
+                    }
                 }
             }
         }
-
-
     }
 }

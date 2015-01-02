@@ -84,12 +84,16 @@ Item {
         text: "&Prune Image"
         shortcut: "Ctrl+D"
 
+        enabled: imageController.hasImage
+
         onTriggered: imageController.setWillBePruned(true)
     }
 
     property Action unflagForPruningAction: Action {
         text: "&Keep Image"
         shortcut: "Ctrl+K"
+
+        enabled: imageController.hasImage
 
         onTriggered: imageController.setWillBePruned(false);
     }
@@ -98,6 +102,19 @@ Item {
         text:"&Remove Image"
         shortcut: "Ctrl+R"
 
+        enabled: imageController.hasImage
+
         onTriggered: imageController.removeFromProject()
+    }
+
+    property Action editTagsAction: Action {
+        text: "&Edit Tags"
+        shortcut: "Ctrl+T"
+
+        enabled: imageController.hasImage
+
+        property TagEditorDialog tagEditor: TagEditorDialog {}
+
+        onTriggered: tagEditor.open()
     }
 }
