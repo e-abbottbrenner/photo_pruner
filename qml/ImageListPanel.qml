@@ -56,59 +56,69 @@ Rectangle {
             }
         }
 
-        ListView {
-            id: listView
 
-            clip: true
-
+        ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            spacing: 2
+            contentItem: listView
 
-            model: appController.projectModel
-            keyNavigationWraps: true
+            frameVisible: false
 
-            delegate: Component {
-                Item {
-                    property variant sourceModel: model
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-                    width: listView.width
-                    height: 20
+            ListView {
+                id: listView
 
-                    Rectangle {
-                        anchors.fill: parent
+                clip: true
 
-                        color: "transparent"
-                        border.color: "#c0c0c0"
-                        border.width: 1
+                spacing: 2
 
-                        radius: 5
+                model: appController.projectModel
+                keyNavigationWraps: true
 
-                        Text {
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: pruned? "red" : "black"
-                            text: display
+                delegate: Component {
+                    Item {
+                        property variant sourceModel: model
+
+                        width: listView.width
+                        height: 20
+
+                        Rectangle {
+                            anchors.fill: parent
+
+                            color: "transparent"
+                            border.color: "#c0c0c0"
+                            border.width: 1
+
+                            radius: 5
+
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.verticalCenter: parent.verticalCenter
+                                color: pruned? "red" : "black"
+                                text: display
+                            }
                         }
-                    }
 
-                    MouseArea {
-                        anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
 
-                        onClicked: {
-                            listView.currentIndex = index
+                            onClicked: {
+                                listView.currentIndex = index
+                            }
                         }
                     }
                 }
-            }
 
-            highlightMoveDuration: 0
-            highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
-            focus: true
+                highlightMoveDuration: 0
+                highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
+                focus: true
 
-            onCurrentItemChanged: {
-                imageController.setImage(currentItem.sourceModel.sourcePath)
+                onCurrentItemChanged: {
+                    imageController.setImage(currentItem.sourceModel.sourcePath)
+                }
             }
         }
     }

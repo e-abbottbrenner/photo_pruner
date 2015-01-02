@@ -84,8 +84,6 @@ ApplicationWindow {
 
             ImagePreviewPanel {
                 imageSource: listPanel.currentImageUrl
-
-                color: "grey"
             }
         }
     }

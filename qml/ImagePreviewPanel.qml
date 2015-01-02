@@ -5,6 +5,8 @@ Rectangle {
 
     property string imageSource
 
+    color: "#a8a8a8"
+
     Flickable {
         id: flickArea
 
