@@ -103,6 +103,12 @@ Rectangle {
 
                 rotation: imageController.rotation
 
+                // we're guaranteed an even multiple of 90
+                property real rotatedWidth: imageController.rotation % 180 == 0? width: height
+                property real rotatedHeight: imageController.rotation % 180 == 0? height: width
+
+                scale: Math.min(width / rotatedWidth, height / rotatedHeight)
+
                 onSourceChanged: {
                     imageWrapper.scale = 1.0
                 }
