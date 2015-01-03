@@ -5,18 +5,31 @@ import QtQuick.Dialogs 1.2
 import PhotoPruner.Controllers 1.0
 
 Item {
+    function autosave() {
+        if(appController.projectUrl.toString().length > 0) {
+            // do this directly instead of through the action to prevent any chance of it getting queued
+            console.log("autosaving")
+            appController.saveProject(appController.projectUrl)
+        }
+    }
+
     property Action newAction: Action {
         text: "&New Project"
         shortcut: StandardKey.New
 
-        onTriggered: appController.newProject()
+        onTriggered: {
+            autosave()
+            appController.newProject()
+        }
     }
 
     property Action saveAction: Action {
         text: "&Save Project"
         shortcut: StandardKey.Save
 
-        onTriggered: appController.projectUrl.length > 0? appController.saveProject(appController.projectUrl) : saveAsAction.trigger()
+        onTriggered: {
+            appController.projectUrl.toString().length > 0? appController.saveProject(appController.projectUrl) : saveAsAction.trigger()
+        }
     }
 
     property Action saveAsAction: Action {
@@ -31,7 +44,9 @@ Item {
             onAccepted: appController.saveProject(fileUrl)
         }
 
-        onTriggered: saveAsDialog.open()
+        onTriggered: {
+            saveAsDialog.open()
+        }
     }
 
     property Action openAction: Action {
@@ -45,7 +60,10 @@ Item {
             onAccepted: appController.openProject(fileUrl)
         }
 
-        onTriggered: openDialog.open()
+        onTriggered: {
+            autosave()
+            openDialog.open()
+        }
     }
 
     property Action importAction: Action {
@@ -122,6 +140,9 @@ Item {
 
         shortcut: "Ctrl+Q"
 
-        onTriggered: Qt.quit()
+        onTriggered: {
+            autosave()
+            Qt.quit()
+        }
     }
 }

@@ -16,6 +16,8 @@ ApplicationWindow {
 
     visibility: Window.Maximized
 
+    onClosing: actions.autosave()
+
     color: "white"
 
     title: "Photo Pruner | " + appController.projectName
