@@ -71,29 +71,49 @@ ApplicationWindow {
             FontAwesomeButton { action: actions.saveAction; text: "\uf0c7" } // fa-save
             FontAwesomeButton { action: actions.importAction; text: "\uf1c5" } // fa-file-image-o
             FontAwesomeButton { action: actions.deletePrunedImagesAction; text: "\uf014" } // fa-trash-o
-            FontAwesomeButton { action: actions.flagForPruningAction; text: "\uf024" } // fa-flag
-            FontAwesomeButton { action: actions.unflagForPruningAction; text: "\uf11d" } //fa-flag-o
-            FontAwesomeButton { action: actions.editTagsAction; text: "\uf02c" } // fa-tags
-            FontAwesomeButton { action: actions.removeFromProjectAction; text: "\uf00d" } // fa-times
+
+            Row {
+            }
+
         }
     }
 
-    Rectangle {
+    SplitView {
+        id: viewingPanels
+
+        orientation: Qt.Horizontal
+
         anchors.fill: parent
 
-        SplitView {
-            orientation: Qt.Horizontal
+        ImageListPanel {
+            id: listPanel
 
-            anchors.fill: parent
+            Layout.minimumWidth: minimumWidth
+        }
 
-            ImageListPanel {
-                id: listPanel
+        ColumnLayout {
+            ImagePreviewPanel {
+                id: previewPanel
 
-                Layout.minimumWidth: minimumWidth
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                imageSource: listPanel.currentImageUrl
             }
 
-            ImagePreviewPanel {
-                imageSource: listPanel.currentImageUrl
+            ToolBar {
+                Layout.fillWidth: true
+
+                RowLayout {
+                    anchors.centerIn: parent
+
+                    FontAwesomeButton { action: actions.editTagsAction; text: "\uf02c" } // fa-tags
+                    FontAwesomeButton { action: actions.rotateCCW; text: "\uf0e2" } // fa-rotate-left
+                    FontAwesomeButton { action: actions.rotateCW; text: "\uf01e" } // fa-rotate-right
+                    FontAwesomeButton { action: actions.flagForPruningAction; text: "\uf024" } // fa-flag
+                    FontAwesomeButton { action: actions.unflagForPruningAction; text: "\uf11d" } //fa-flag-o
+                    FontAwesomeButton { action: actions.removeFromProjectAction; text: "\uf00d" } // fa-times
+                }
             }
         }
     }
