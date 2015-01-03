@@ -62,6 +62,15 @@ ApplicationWindow {
 
             MenuItem { action: actions.removeFromProjectAction }
         }
+
+        Menu {
+            title: "&View"
+
+            MenuItem { action: actions.resetZoom }
+            MenuSeparator {}
+            MenuItem { action: actions.zoomIn }
+            MenuItem { action: actions.zoomOut }
+        }
     }
 
     toolBar: ToolBar {
@@ -99,6 +108,14 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
                 imageSource: listPanel.currentImageUrl
+
+                Connections {
+                    target: actions
+
+                    onResetZoomRequested: previewPanel.resetZoom()
+                    onZoomInRequested: previewPanel.zoomIn()
+                    onZoomOutRequested: previewPanel.zoomOut()
+                }
             }
 
             ToolBar {

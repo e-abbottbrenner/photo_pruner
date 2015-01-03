@@ -161,4 +161,40 @@ Item {
 
         onTriggered: imageController.rotation = imageController.rotation + 90
     }
+
+    signal resetZoomRequested()
+    signal zoomInRequested()
+    signal zoomOutRequested()
+
+    // TODO: how do we hook these up?  Probably need functions on the image preview panel.
+    // We can emit signals from here and do connections that call the appropriate functions from main.qml
+    property Action resetZoom : Action {
+        text: "Reset Zoom"
+
+        shortcut: "Ctrl+0"
+
+        enabled: imageController.hasImage
+
+        onTriggered: actions.resetZoomRequested()
+    }
+
+    property Action zoomIn : Action {
+        text: "Zoom In"
+
+        shortcut: "Ctrl+="
+
+        enabled: imageController.hasImage
+
+        onTriggered: actions.zoomInRequested()
+    }
+
+    property Action zoomOut : Action {
+        text: "Zoom Out"
+
+        shortcut: "Ctrl+-"
+
+        enabled: imageController.hasImage
+
+        onTriggered: actions.zoomOutRequested()
+    }
 }

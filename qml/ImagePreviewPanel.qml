@@ -10,6 +10,54 @@ Rectangle {
 
     color: "#a8a8a8"
 
+    function resetZoom() {
+        zoomOnPoint(1.0, imageWrapper.centerPoint)
+    }
+
+    property int standardZoomExp: 2
+
+    function zoomIn() {
+        var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, standardZoomExp)))
+
+        zoomOnPoint(newScale, imageWrapper.centerPoint)
+    }
+
+    function zoomOut() {
+        var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, -standardZoomExp)))
+
+        zoomOnPoint(newScale, imageWrapper.centerPoint)
+    }
+
+    function zoomOnPoint(newScale, zoomPoint) {
+
+        // left and top edge in flick area coords
+        var leftEdge = flickArea.contentX
+        var topEdge = flickArea.contentY
+
+        // the distance from the edges in flickArea coords (multiply by scale to go from imageWrapper coords to flick area coords)
+        var scaledDistLeft = zoomPoint.x * imageWrapper.scale - leftEdge
+        var scaledDistTop = zoomPoint.y * imageWrapper.scale - topEdge
+
+        // the final location of the mapped point in flick area coords
+        var zoomPointDestX = zoomPoint.x * newScale
+        var zoomPointDestY = zoomPoint.y * newScale
+
+        // the new contentX/contentY positions in flick area coords, computed by taking the location of the mapped point
+        // and subtracting the desired distance between it and the new contentx/contenty positions
+        // this desired distance is the same as the old distance because we don't want it to move on the screen
+        var newContentX = zoomPointDestX - scaledDistLeft
+        var newContentY = zoomPointDestY - scaledDistTop
+
+        // rescale
+        imageWrapper.scale = newScale
+
+        flickArea.contentX = newContentX
+        flickArea.contentY = newContentY
+
+        // just in case
+        flickArea.returnToBounds()
+    }
+
     Flickable {
         id: flickArea
 
@@ -39,42 +87,19 @@ Rectangle {
                 // note: mappedPoint should retain its position in screen space
                 var mappedPoint = mapToItem(imageWrapper, wheel.x, wheel.y)
 
-                // left and top edge in flick area coords
-                var leftEdge = flickArea.contentX
-                var topEdge = flickArea.contentY
-
-                // the distance from the edges in flickArea coords (multiply by scale to go from imageWrapper coords to flick area coords)
-                var scaledDistLeft = mappedPoint.x * imageWrapper.scale - leftEdge
-                var scaledDistTop = mappedPoint.y * imageWrapper.scale - topEdge
-
                 var exp = wheel.angleDelta.y / 15.0
 
                 // new scale with non-nan limits, nans are bad
                 var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, exp)))
 
-                // the final location of the mapped point in flick area coords
-                var mappedPointDestX = mappedPoint.x * newScale
-                var mappedPointDestY = mappedPoint.y * newScale
-
-                // the new contentX/contentY positions in flick area coords, computed by taking the location of the mapped point
-                // and subtracting the desired distance between it and the new contentx/contenty positions
-                // this desired distance is the same as the old distance because we don't want it to move on the screen
-                var newContentX = mappedPointDestX - scaledDistLeft
-                var newContentY = mappedPointDestY - scaledDistTop
-
-                // rescale
-                imageWrapper.scale = newScale
-
-                flickArea.contentX = newContentX
-                flickArea.contentY = newContentY
-
-                // just in case
-                flickArea.returnToBounds()
+                previewPanel.zoomOnPoint(newScale, mappedPoint)
             }
         }
 
         Item {
             id: imageWrapper
+
+            property point centerPoint: Qt.point(x + width / 2.0, y + height / 2.0)
 
             width: previewPanel.width
             height: previewPanel.height
@@ -117,10 +142,6 @@ Rectangle {
                 property real initialFitScale: Math.min(parent.width / width, parent.height / height)
 
                 scale: initialFitScale * rotationFitScale
-
-                onSourceChanged: {
-                    imageWrapper.scale = 1.0
-                }
             }
         }
     }
