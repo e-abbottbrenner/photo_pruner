@@ -60,6 +60,21 @@ TEST_F(ImageControllerTest, testSetWillBePruned)
     EXPECT_FALSE(willBePrunedChangedSpy[1][0].toBool());
 }
 
+TEST_F(ImageControllerTest, testSetRotation)
+{
+    EXPECT_EQ(0, image->getRotation());
+
+    QSignalSpy rotationChangedSpy(controller.data(), SIGNAL(rotationChanged(int)));
+
+    controller->setRotation(540);
+
+    ASSERT_EQ(1, rotationChangedSpy.size());
+
+    EXPECT_EQ(180, rotationChangedSpy[0][0].toInt());
+
+    EXPECT_EQ(180, image->getRotation());
+}
+
 TEST_F(ImageControllerTest, testRemoveFromProject)
 {
     EXPECT_TRUE(!appModel->getCurrentProject()->getImage(image->getImagePath()).isNull());
@@ -120,6 +135,7 @@ TEST_F(ImageControllerTest, testSetImage)
     QSignalSpy imageAvailableChanged(controller.data(), SIGNAL(imageAvailableChanged(bool)));
     QSignalSpy tagsChangedSpy(controller.data(), SIGNAL(tagsChanged(QStringList)));
     QSignalSpy willBePrunedChangedSpy(controller.data(), SIGNAL(willBePrunedChanged(bool)));
+    QSignalSpy rotationChangedSpy(controller.data(), SIGNAL(rotationChanged(int)));
 
     controller->setImage(QString());
 
@@ -127,12 +143,15 @@ TEST_F(ImageControllerTest, testSetImage)
 
     ASSERT_EQ(1, imageAvailableChanged.size());
     EXPECT_EQ(0, tagsChangedSpy.size());
+    EXPECT_EQ(0, willBePrunedChangedSpy.size());
+    EXPECT_EQ(0, rotationChangedSpy.size());
 
     EXPECT_FALSE(imageAvailableChanged[0][0].toBool());
 
     QString tag = "tag";
     image->addImageTag(tag);
     image->setWillBePruned(true);
+    image->setRotation(90);
 
     controller->setImage(image->getImagePath());
 
@@ -149,4 +168,8 @@ TEST_F(ImageControllerTest, testSetImage)
     ASSERT_EQ(1, willBePrunedChangedSpy.size());
 
     EXPECT_EQ(true, willBePrunedChangedSpy[0][0].toBool());
+
+    ASSERT_EQ(1, rotationChangedSpy.size());
+
+    EXPECT_EQ(90, rotationChangedSpy[0][0].toInt());
 }

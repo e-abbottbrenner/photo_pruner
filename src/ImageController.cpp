@@ -29,6 +29,26 @@ void ImageController::setWillBePruned(bool prune)
     }
 }
 
+int ImageController::getRotation() const
+{
+    if(image)
+    {
+        return image->getRotation();
+    }
+
+    return 0;
+}
+
+void ImageController::setRotation(int rotation)
+{
+    ChangeCatcher changeCatcher(this);
+
+    if(image)
+    {
+        image->setRotation(rotation);
+    }
+}
+
 void ImageController::setImage(const QString &imageSourcePath)
 {
     ChangeCatcher changeCatcher(this);
@@ -99,11 +119,17 @@ void ImageController::emitWillBePrunedChanged(bool willBePruned)
     emit willBePrunedChanged(willBePruned);
 }
 
+void ImageController::emitRotationChanged(int rotation)
+{
+    emit rotationChanged(rotation);
+}
+
 ImageController::ChangeCatcher::ChangeCatcher(ImageController* controller)
     : controller(controller)
     , oldTags(controller->getTags())
     , oldImageAvailable(controller->imageAvailable())
     , oldWillBePruned(controller->getWillBePruned())
+    , oldRotation(controller->getRotation())
 {
 }
 
@@ -112,6 +138,7 @@ ImageController::ChangeCatcher::~ChangeCatcher()
     QStringList newTags = controller->getTags();
     bool newImageAvailable = controller->imageAvailable();
     bool newWillBePruned = controller->getWillBePruned();
+    int newRotation = controller->getRotation();
 
     if(oldTags != newTags)
     {
@@ -126,5 +153,10 @@ ImageController::ChangeCatcher::~ChangeCatcher()
     if(newWillBePruned != oldWillBePruned)
     {
         controller->emitWillBePrunedChanged(newWillBePruned);
+    }
+
+    if(oldRotation != newRotation)
+    {
+        controller->emitRotationChanged(newRotation);
     }
 }
