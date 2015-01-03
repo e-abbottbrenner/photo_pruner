@@ -71,6 +71,13 @@ Rectangle {
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
             verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
+            focus: true
+
+            Keys.onRightPressed: listView.incrementCurrentIndex()
+            Keys.onLeftPressed: listView.decrementCurrentIndex()
+            Keys.onUpPressed: listView.decrementCurrentIndex()
+            Keys.onDownPressed: listView.incrementCurrentIndex()
+
             ListView {
                 id: listView
 
