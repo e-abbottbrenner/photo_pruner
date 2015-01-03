@@ -13,8 +13,8 @@ Rectangle {
     Flickable {
         id: flickArea
 
-        contentWidth: imageWrapper.width * image.scale
-        contentHeight: imageWrapper.height * image.scale
+        contentWidth: imageWrapper.width * imageWrapper.scale
+        contentHeight: imageWrapper.height * imageWrapper.scale
 
         interactive: true
         clip: true
@@ -90,26 +90,21 @@ Rectangle {
 
             transform: scalingTransform
 
-            RowLayout {
+            Image {
+                id: image
+
                 anchors.fill: parent
 
-                Image {
-                    id: image
+                asynchronous: true
 
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
+                fillMode: Image.PreserveAspectFit
 
-                    asynchronous: true
+                source: previewPanel.imageSource
 
-                    fillMode: Image.PreserveAspectFit
+                rotation: imageController.rotation
 
-                    source: previewPanel.imageSource
-
-                    rotation: imageController.rotation
-
-                    onSourceChanged: {
-                        imageWrapper.scale = 1.0
-                    }
+                onSourceChanged: {
+                    imageWrapper.scale = 1.0
                 }
             }
         }
