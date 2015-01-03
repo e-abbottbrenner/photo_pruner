@@ -16,7 +16,7 @@ Item {
         text: "&Save Project"
         shortcut: StandardKey.Save
 
-        onTriggered: appController.saveProject(appController.projectUrl)
+        onTriggered: appController.projectUrl.length > 0? appController.saveProject(appController.projectUrl) : saveAsAction.trigger()
     }
 
     property Action saveAsAction: Action {

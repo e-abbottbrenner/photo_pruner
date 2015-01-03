@@ -55,16 +55,15 @@ ApplicationWindow {
 
     toolBar: ToolBar {
         RowLayout {
-            ToolButton { action: actions.newAction }
-            ToolButton { action: actions.openAction }
-            ToolButton { action: actions.saveAction }
-            ToolButton { action: actions.saveAsAction }
-            ToolButton { action: actions.importAction }
-            ToolButton { action: actions.deletePrunedImagesAction }
-            ToolButton { action: actions.flagForPruningAction }
-            ToolButton { action: actions.unflagForPruningAction }
-            ToolButton { action: actions.editTagsAction }
-            ToolButton { action: actions.removeFromProjectAction }
+            FontAwesomeButton { action: actions.newAction; text: "\uf016" } // fa-file-o
+            FontAwesomeButton { action: actions.openAction; text: "\uf115" } // fa-folder-open-o
+            FontAwesomeButton { action: actions.saveAction; text: "\uf0c7" } // fa-save
+            FontAwesomeButton { action: actions.importAction; text: "\uf1c5" } // fa-file-image-o
+            FontAwesomeButton { action: actions.deletePrunedImagesAction; text: "\uf014" } // fa-trash-o
+            FontAwesomeButton { action: actions.flagForPruningAction; text: "\uf024" } // fa-flag
+            FontAwesomeButton { action: actions.unflagForPruningAction; text: "\uf11d" } //fa-flag-o
+            FontAwesomeButton { action: actions.editTagsAction; text: "\uf02c" } // fa-tags
+            FontAwesomeButton { action: actions.removeFromProjectAction; text: "\uf00d" } // fa-times
         }
     }
 
