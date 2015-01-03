@@ -61,6 +61,8 @@ Rectangle {
 
 
         ScrollView {
+            id: imageListScrollView
+
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -119,6 +121,8 @@ Rectangle {
 
                             onClicked: {
                                 listView.currentIndex = index
+                                imageListScrollView.forceActiveFocus()
+
                             }
                         }
                     }
@@ -126,7 +130,7 @@ Rectangle {
 
                 highlightMoveDuration: 0
                 highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
-                focus: true
+                focus: false
             }
         }
     }
