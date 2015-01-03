@@ -58,6 +58,13 @@ Rectangle {
         flickArea.returnToBounds()
     }
 
+    Connections {
+        target: appController
+
+        // reset the scale if the project changes
+        onProjectUrlChanged: imageWrapper.scale = 1.0
+    }
+
     Flickable {
         id: flickArea
 
@@ -85,14 +92,19 @@ Rectangle {
             onWheel: {
                 // current point the mouse is over in imageWrapper coords
                 // note: mappedPoint should retain its position in screen space
-                var mappedPoint = mapToItem(imageWrapper, wheel.x, wheel.y)
+                if(imageController.hasImage)
+                {
+                    var mappedPoint = mapToItem(imageWrapper, wheel.x, wheel.y)
 
-                var exp = wheel.angleDelta.y / 15.0
+                    var exp = wheel.angleDelta.y / 15.0
 
-                // new scale with non-nan limits, nans are bad
-                var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, exp)))
+                    // new scale with non-nan limits, nans are bad
+                    var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, exp)))
 
-                previewPanel.zoomOnPoint(newScale, mappedPoint)
+                    previewPanel.zoomOnPoint(newScale, mappedPoint)
+                }
+
+                wheel.accepted = true
             }
         }
 
@@ -120,8 +132,8 @@ Rectangle {
 
                 anchors.centerIn: parent
 
-                width: sourceSize.width
-                height: sourceSize.height
+                width: sourceSize.width? sourceSize.width : previewPanel.width
+                height: sourceSize.height? sourceSize.height : previewPanel.height
 
                 asynchronous: true
 

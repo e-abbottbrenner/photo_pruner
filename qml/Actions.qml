@@ -166,8 +166,6 @@ Item {
     signal zoomInRequested()
     signal zoomOutRequested()
 
-    // TODO: how do we hook these up?  Probably need functions on the image preview panel.
-    // We can emit signals from here and do connections that call the appropriate functions from main.qml
     property Action resetZoom : Action {
         text: "Reset Zoom"
 
