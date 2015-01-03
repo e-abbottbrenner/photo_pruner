@@ -7,6 +7,7 @@
 const QString ProjectImage::JsonKeys::IMAGE_PATH = "image-path";
 const QString ProjectImage::JsonKeys::TAGS = "tags";
 const QString ProjectImage::JsonKeys::WILL_BE_PRUNED = "will-be-pruned";
+const QString ProjectImage::JsonKeys::ROTATION = "rotation";
 
 /*!
  * \brief ProjectImage::create constructs a project image for the given system file path
@@ -23,7 +24,7 @@ ProjectImagePtr ProjectImage::createProjectImage(const QString &imagePath)
  * \param imagePath
  */
 ProjectImage::ProjectImage(const QString& imagePath)
-    : imagePath(imagePath), willBePruned(false)
+    : imagePath(imagePath), willBePruned(false), rotation(0)
 {
 }
 
@@ -103,6 +104,23 @@ void ProjectImage::setWillBePruned(bool willBePruned)
     }
 }
 
+int ProjectImage::getRotation() const
+{
+    return rotation;
+}
+
+void ProjectImage::setRotation(int rotation)
+{
+    rotation = rotation % 360;
+
+    if(this->rotation != rotation)
+    {
+        this->rotation = rotation;
+
+        emit rotationChanged(imagePath, rotation);
+    }
+}
+
 /*!
  * \brief ProjectImage::getImagePath gets the path of the image on the file system
  * \return
@@ -135,6 +153,7 @@ QJsonObject ProjectImage::toJsonObject() const
     object.insert(JsonKeys::IMAGE_PATH, imagePath);
     object.insert(JsonKeys::TAGS, tags);
     object.insert(JsonKeys::WILL_BE_PRUNED, willBePruned);
+    object.insert(JsonKeys::ROTATION, rotation);
 
     return object;
 }
@@ -157,6 +176,7 @@ ProjectImagePtr ProjectImage::fromJsonObject(const QJsonObject &obj)
     }
 
     projectImage->willBePruned = obj.value(JsonKeys::WILL_BE_PRUNED).toBool();
+    projectImage->rotation = obj.value(JsonKeys::ROTATION).toInt();
 
     return projectImage;
 }
@@ -169,7 +189,8 @@ ProjectImagePtr ProjectImage::fromJsonObject(const QJsonObject &obj)
 bool ProjectImage::equals(ProjectImagePtr other) const
 {
     return other != NULL
-            && this->imagePath == other->imagePath
-            && this->imageTags == other->imageTags
-            && this->willBePruned == other->willBePruned;
+                    && this->imagePath == other->imagePath
+                    && this->imageTags == other->imageTags
+                    && this->willBePruned == other->willBePruned
+                    && this->rotation == other->rotation;
 }

@@ -197,13 +197,14 @@ protected:
 
         ProjectUtils::addImagesToProject(project, imagePaths);
 
-        QString jsonString = QString("{\"%1\": [ { \"%2\":\"%3\", \"%5\": [ ], \"%6\": %7 }, "
-                                     "{ \"%2\":\"%4\", \"%5\": [ ], \"%6\": %7 } ] }")
+        QString jsonString = QString("{\"%1\": [ { \"%2\":\"%3\", \"%5\": [ ], \"%6\": %7, \"%8\": %9 }, "
+                                     "{ \"%2\":\"%4\", \"%5\": [ ], \"%6\": %7, \"%8\": %9 } ] }")
                              .arg(Project::JsonKeys::IMAGES,
                                   ProjectImage::JsonKeys::IMAGE_PATH,
                                   imagePaths[0], imagePaths[1],
                 ProjectImage::JsonKeys::TAGS,
-                ProjectImage::JsonKeys::WILL_BE_PRUNED, "false");
+                ProjectImage::JsonKeys::WILL_BE_PRUNED, "false",
+                ProjectImage::JsonKeys::ROTATION, "0");
 
         jsonObject = QJsonDocument::fromJson(jsonString.toUtf8()).object();
     }

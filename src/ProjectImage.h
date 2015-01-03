@@ -24,6 +24,9 @@ public:
     bool getWillBePruned() const;
     void setWillBePruned(bool value);
 
+    int getRotation() const;
+    void setRotation(int rotation);
+
     QString getImagePath() const;
 
     bool equals(ProjectImagePtr other) const;
@@ -38,12 +41,15 @@ public:
         static const QString IMAGE_PATH;
         static const QString TAGS;
         static const QString WILL_BE_PRUNED;
+        static const QString ROTATION;
     };
 
 signals:
     void tagAdded(const QString& imagePath, const QString& tag);
     void tagRemoved(const QString& imagePath, const QString& tag);
     void willBePrunedChanged(const QString& imagePath, bool willBePruned);
+    void rotationChanged(const QString& imagePath, int rotation);
+
 
 private:
     ProjectImage(const QString &imagePath);
@@ -51,6 +57,7 @@ private:
     QString imagePath;
     StringSet imageTags;
     bool willBePruned;
+    int rotation;
 };
 
 #endif // PROJECTIMAGE_H

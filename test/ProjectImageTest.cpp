@@ -39,6 +39,11 @@ TEST_F(ProjectImageTest, testEquals)
 
     EXPECT_FALSE(projectImage->equals(otherImage));
 
+    otherImage = ProjectImage::createProjectImage(path);
+    otherImage->setRotation(90);
+
+    EXPECT_FALSE(projectImage->equals(otherImage));
+
     otherImage = ProjectImage::createProjectImage("12345");
 
     EXPECT_FALSE(projectImage->equals(otherImage));
@@ -115,6 +120,28 @@ TEST_F(ProjectImageTest, testWillBePruned)
     ASSERT_EQ(2, prunedSpy.size());
 }
 
+TEST_F(ProjectImageTest, testRotation)
+{
+    EXPECT_EQ(0, projectImage->getRotation());
+
+    QSignalSpy rotationSpy(projectImage.data(), SIGNAL(rotationChanged(QString,int)));
+
+    projectImage->setRotation(90);
+
+    ASSERT_EQ(1, rotationSpy.size());
+
+    EXPECT_EQ(projectImage->getImagePath(), rotationSpy[0][0].toString());
+    EXPECT_EQ(90, rotationSpy[0][1].toInt());
+
+    EXPECT_EQ(90, projectImage->getRotation());
+
+    projectImage->setRotation(540);
+
+    ASSERT_EQ(2, rotationSpy.size());
+
+    EXPECT_EQ(180, projectImage->getRotation());
+}
+
 class ProjectImageJsonTest : public ProjectImageTest
 {
 protected:
@@ -129,10 +156,13 @@ protected:
         projectImage->addImageTag(tag1);
         projectImage->addImageTag(tag2);
 
-        QString jsonString = QString("{ \"%1\":\"%2\", \"%3\": [ \"%4\", \"%5\" ], \"%6\": %7 }")
+        projectImage->setRotation(90);
+
+        QString jsonString = QString("{ \"%1\":\"%2\", \"%3\": [ \"%4\", \"%5\" ], \"%6\": %7, \"%8\": %9 }")
                 .arg(ProjectImage::JsonKeys::IMAGE_PATH, path,
                      ProjectImage::JsonKeys::TAGS, tag1, tag2,
-                     ProjectImage::JsonKeys::WILL_BE_PRUNED, "false");
+                     ProjectImage::JsonKeys::WILL_BE_PRUNED, "false",
+                     ProjectImage::JsonKeys::ROTATION, "90");
 
         jsonObject = QJsonDocument::fromJson(jsonString.toUtf8()).object();
     }
