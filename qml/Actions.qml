@@ -145,4 +145,20 @@ Item {
             Qt.quit()
         }
     }
+
+    property Action rotateCCW : Action {
+        text: "Rotate Counterclockwise"
+
+        enabled: imageController.hasImage
+
+        onTriggered: imageController.rotation = imageController.rotation - 90
+    }
+
+    property Action rotateCW : Action {
+        text: "Rotate Clockwise"
+
+        enabled: imageController.hasImage
+
+        onTriggered: imageController.rotation = imageController.rotation + 90
+    }
 }

@@ -1,4 +1,7 @@
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
+
+import PhotoPruner.Controllers 1.0
 
 Rectangle {
     id: previewPanel
@@ -10,8 +13,8 @@ Rectangle {
     Flickable {
         id: flickArea
 
-        contentWidth: image.width * image.scale
-        contentHeight: image.height * image.scale
+        contentWidth: imageWrapper.width * image.scale
+        contentHeight: imageWrapper.height * image.scale
 
         interactive: true
         clip: true
@@ -32,22 +35,22 @@ Rectangle {
             height: flickArea.contentHeight
 
             onWheel: {
-                // current point the mouse is over in image coords
+                // current point the mouse is over in imageWrapper coords
                 // note: mappedPoint should retain its position in screen space
-                var mappedPoint = mapToItem(image, wheel.x, wheel.y)
+                var mappedPoint = mapToItem(imageWrapper, wheel.x, wheel.y)
 
                 // left and top edge in flick area coords
                 var leftEdge = flickArea.contentX
                 var topEdge = flickArea.contentY
 
-                // the distance from the edges in flickArea coords (multiply by scale to go from image coords to flick area coords)
-                var scaledDistLeft = mappedPoint.x * image.scale - leftEdge
-                var scaledDistTop = mappedPoint.y * image.scale - topEdge
+                // the distance from the edges in flickArea coords (multiply by scale to go from imageWrapper coords to flick area coords)
+                var scaledDistLeft = mappedPoint.x * imageWrapper.scale - leftEdge
+                var scaledDistTop = mappedPoint.y * imageWrapper.scale - topEdge
 
                 var exp = wheel.angleDelta.y / 15.0
 
                 // new scale with non-nan limits, nans are bad
-                var newScale = Math.max(1, Math.min(100000, image.scale * Math.pow(1.05, exp)))
+                var newScale = Math.max(1, Math.min(100000, imageWrapper.scale * Math.pow(1.05, exp)))
 
                 // the final location of the mapped point in flick area coords
                 var mappedPointDestX = mappedPoint.x * newScale
@@ -60,7 +63,7 @@ Rectangle {
                 var newContentY = mappedPointDestY - scaledDistTop
 
                 // rescale
-                image.scale = newScale
+                imageWrapper.scale = newScale
 
                 flickArea.contentX = newContentX
                 flickArea.contentY = newContentY
@@ -70,31 +73,44 @@ Rectangle {
             }
         }
 
-        Image {
-            id: image
-
-            asynchronous: true
+        Item {
+            id: imageWrapper
 
             width: previewPanel.width
             height: previewPanel.height
-
-            fillMode: Image.PreserveAspectFit
-
-            source: previewPanel.imageSource
 
             property real scale: 1.0
 
             property Scale scalingTransform: Scale {
                 origin.x: 0
                 origin.y: 0
-                xScale: image.scale
-                yScale: image.scale
+                xScale: imageWrapper.scale
+                yScale: imageWrapper.scale
             }
 
             transform: scalingTransform
 
-            onSourceChanged: {
-                image.scale = 1.0
+            RowLayout {
+                anchors.fill: parent
+
+                Image {
+                    id: image
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    asynchronous: true
+
+                    fillMode: Image.PreserveAspectFit
+
+                    source: previewPanel.imageSource
+
+                    rotation: imageController.rotation
+
+                    onSourceChanged: {
+                        imageWrapper.scale = 1.0
+                    }
+                }
             }
         }
     }

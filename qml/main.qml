@@ -55,6 +55,11 @@ ApplicationWindow {
 
             MenuSeparator {}
 
+            MenuItem { action: actions.rotateCW }
+            MenuItem { action: actions.rotateCCW }
+
+            MenuSeparator {}
+
             MenuItem { action: actions.removeFromProjectAction }
         }
     }

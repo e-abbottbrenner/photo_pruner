@@ -140,6 +140,12 @@ TEST_F(ProjectImageTest, testRotation)
     ASSERT_EQ(2, rotationSpy.size());
 
     EXPECT_EQ(180, projectImage->getRotation());
+
+    projectImage->setRotation(-540);
+
+    ASSERT_EQ(2, rotationSpy.size());
+
+    EXPECT_EQ(180, projectImage->getRotation());
 }
 
 class ProjectImageJsonTest : public ProjectImageTest

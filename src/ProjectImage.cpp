@@ -113,6 +113,11 @@ void ProjectImage::setRotation(int rotation)
 {
     rotation = rotation % 360;
 
+    if(rotation < 0)
+    {
+        rotation += 360;
+    }
+
     if(this->rotation != rotation)
     {
         this->rotation = rotation;
