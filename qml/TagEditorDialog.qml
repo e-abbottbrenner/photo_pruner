@@ -33,6 +33,8 @@ Dialog {
                 Button {
                     text: "Add Tag"
 
+                    enabled: newTagText.text.length > 0
+
                     height: newTagText.height
 
                     anchors.verticalCenter: parent.verticalCenter
