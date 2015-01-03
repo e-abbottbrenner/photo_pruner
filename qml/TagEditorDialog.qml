@@ -85,6 +85,9 @@ Dialog {
                                 text: "\uf00d"
                                 borderless: true
 
+                                pressedColor: "white"
+                                unpressedColor: "black"
+
                                 fontSize: parent.fontSize
 
                                 onClicked: imageController.removeTag(modelData)

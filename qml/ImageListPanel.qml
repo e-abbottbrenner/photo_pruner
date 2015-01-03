@@ -12,6 +12,9 @@ Rectangle {
     property url currentImageUrl: listView.currentItem? listView.currentItem.sourceModel?
                                                             listView.currentItem.sourceModel.sourceUrl : "" : ""
 
+    property string currentImagePath:  listView.currentItem? listView.currentItem.sourceModel?
+                                                                 listView.currentItem.sourceModel.sourcePath : "" : ""
+
     color: "#c8c8c8"
 
     ColumnLayout {
@@ -117,11 +120,11 @@ Rectangle {
                 highlightMoveDuration: 0
                 highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
                 focus: true
-
-                onCurrentItemChanged: {
-                    imageController.setImage(currentItem.sourceModel.sourcePath)
-                }
             }
         }
+    }
+
+    onCurrentImagePathChanged: {
+        imageController.setImage(currentImagePath)
     }
 }

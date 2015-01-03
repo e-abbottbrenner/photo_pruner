@@ -7,7 +7,8 @@ Button {
     property bool borderless: false
 
     property color unpressedColor: "black"
-    property color pressedColor: "white"
+    property color pressedColor: "black"
+    property color disabledColor: "#c8c8c8"
 
     FontLoader {
         id: fontAwesome
@@ -23,13 +24,12 @@ Button {
 
     style: ButtonStyle {
         Component {
-            id: borderRect
+            id: borderRectEnabled
 
             Rectangle {
                 implicitWidth:  fontAwesomeMetrics.boundingRect(text).width
                 implicitHeight:  fontAwesomeMetrics.boundingRect(text).height
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
+                border.color: control.pressed? unpressedColor : pressedColor
                 radius: 4
                 gradient: Gradient {
                     GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
@@ -38,7 +38,18 @@ Button {
             }
         }
 
-        background: control.borderless? null : borderRect
+        Component {
+            id: borderRectDisabled
+
+            Rectangle {
+                implicitWidth:  fontAwesomeMetrics.boundingRect(text).width
+                implicitHeight:  fontAwesomeMetrics.boundingRect(text).height
+                border.color: disabledColor
+                radius: 4
+            }
+        }
+
+        background: control.borderless? null : control.enabled? borderRectEnabled : borderRectDisabled
 
         label: Component {
             Text {
@@ -50,7 +61,8 @@ Button {
                 font.family: fontAwesome.name
                 font.pointSize: fontSize
 
-                color: control.borderless? (control.pressed? control.pressedColor : control.unpressedColor) : control.unpressedColor
+                color: control.enabled? (control.pressed? control.pressedColor : control.unpressedColor)
+                                      : control.disabledColor
             }
         }
     }
