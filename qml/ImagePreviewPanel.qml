@@ -93,7 +93,10 @@ Rectangle {
             Image {
                 id: image
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+
+                width: sourceSize.width
+                height: sourceSize.height
 
                 asynchronous: true
 
@@ -107,7 +110,13 @@ Rectangle {
                 property real rotatedWidth: imageController.rotation % 180 == 0? width: height
                 property real rotatedHeight: imageController.rotation % 180 == 0? height: width
 
-                scale: Math.min(width / rotatedWidth, height / rotatedHeight)
+                // adjusts the scale for when the width and height flip from the rotation
+                property real rotationFitScale: Math.min(width / rotatedWidth, height / rotatedHeight)
+
+                // fits the image appropriately inside the parent item
+                property real initialFitScale: Math.min(parent.width / width, parent.height / height)
+
+                scale: initialFitScale * rotationFitScale
 
                 onSourceChanged: {
                     imageWrapper.scale = 1.0
