@@ -37,6 +37,8 @@ ApplicationWindow {
             MenuItem { action: actions.importAction }
             MenuSeparator{}
             MenuItem { action: actions.deletePrunedImagesAction }
+            MenuSeparator {}
+            MenuItem { action: actions.quitAction }
         }
 
         Menu {

@@ -116,4 +116,12 @@ Item {
 
         onTriggered: tagEditor.open()
     }
+
+    property Action quitAction : Action {
+        text: "&Quit"
+
+        shortcut: "Ctrl+Q"
+
+        onTriggered: Qt.quit()
+    }
 }
