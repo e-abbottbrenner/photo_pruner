@@ -4,4 +4,5 @@ DISTFILES += \
     $$PWD/ImagePreviewPanel.qml \
     $$PWD/PruningFilterComboBox.qml \
     $$PWD/TagEditorDialog.qml \
-    $$PWD/ImageListPanel.qml
+    $$PWD/ImageListPanel.qml \
+    $$PWD/FontAwesomeButton.qml

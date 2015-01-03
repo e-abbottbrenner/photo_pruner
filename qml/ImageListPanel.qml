@@ -75,6 +75,8 @@ Rectangle {
 
                 spacing: 2
 
+                boundsBehavior: Flickable.StopAtBounds
+
                 model: appController.projectModel
                 keyNavigationWraps: true
 

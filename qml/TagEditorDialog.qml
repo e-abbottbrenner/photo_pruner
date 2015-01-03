@@ -8,42 +8,98 @@ import PhotoPruner.Controllers 1.0
 Dialog {
     property var tags: imageController.tags
 
-    Column {
-        Row {
-            TextField {
-                id: newTagText
-            }
+    width: 240
+    height: 240
 
-            Button {
-                text: "Add Tag"
+    contentItem: Rectangle {
+        color: "#d8d8d8"
 
-                onClicked: {
-                    imageController.addTag(newTagText.text)
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 10
+
+            RowLayout {
+                Layout.fillHeight: false
+
+                TextField {
+                    id: newTagText
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: false
+
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Button {
+                    text: "Add Tag"
+
+                    height: newTagText.height
+
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    onClicked: {
+                        imageController.addTag(newTagText.text)
+                    }
                 }
             }
-        }
 
-        Row {
             ListView {
-                id: tagRemovalComboBox
+                id: tagList
                 model: tags
 
-                width:200
-                height: 200
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                spacing: 5
+                clip: true
+
+                boundsBehavior: Flickable.StopAtBounds
 
                 delegate: Component {
-                    Row {
-                        Text {
-                            text: modelData
-                        }
+                    Item {
+                        width: tagList.width
+                        height: 20
 
-                        Button {
-                            text: "x"
+                        Rectangle {
+                            anchors.fill: parent
+                            color: "#c0c0c0"
+                            radius: 5
 
-                            onClicked: imageController.removeTag(modelData)
+                            property real fontSize: 10
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.leftMargin: 5
+
+                                text: modelData
+                                font.pointSize: parent.fontSize
+                            }
+
+                            FontAwesomeButton {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                anchors.rightMargin: 5
+
+                                // fa-times
+                                text: "\uf00d"
+                                borderless: true
+
+                                fontSize: parent.fontSize
+
+                                onClicked: imageController.removeTag(modelData)
+                            }
                         }
                     }
                 }
+            }
+
+            Button {
+                text: "Ok"
+
+                Layout.alignment: Qt.AlignRight
+
+                onClicked: close()
             }
         }
     }

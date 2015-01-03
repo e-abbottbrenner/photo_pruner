@@ -6,5 +6,7 @@
         <file>qml/PruningFilterComboBox.qml</file>
         <file>qml/TagEditorDialog.qml</file>
         <file>qml/ImageListPanel.qml</file>
+        <file>fonts/fontawesome-webfont.ttf</file>
+        <file>qml/FontAwesomeButton.qml</file>
     </qresource>
 </RCC>
