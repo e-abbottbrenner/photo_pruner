@@ -9,6 +9,26 @@ ImageController::ImageController(QObject *parent) : QObject(parent)
 {
 }
 
+bool ImageController::getWillBePruned() const
+{
+    if(image)
+    {
+        return image->getWillBePruned();
+    }
+
+    return false;
+}
+
+void ImageController::setWillBePruned(bool prune)
+{
+    ChangeCatcher changeCatcher(this);
+
+    if(image)
+    {
+        image->setWillBePruned(prune);
+    }
+}
+
 void ImageController::setImage(const QString &imageSourcePath)
 {
     ChangeCatcher changeCatcher(this);
@@ -20,16 +40,6 @@ void ImageController::setImage(const QString &imageSourcePath)
     else
     {
         image.clear();
-    }
-}
-
-void ImageController::setWillBePruned(bool prune)
-{
-    ChangeCatcher changeCatcher(this);
-
-    if(image)
-    {
-        image->setWillBePruned(prune);
     }
 }
 
@@ -84,10 +94,16 @@ void ImageController::emitImageAvailableChanged(bool imageAvailable)
     emit imageAvailableChanged(imageAvailable);
 }
 
+void ImageController::emitWillBePrunedChanged(bool willBePruned)
+{
+    emit willBePrunedChanged(willBePruned);
+}
+
 ImageController::ChangeCatcher::ChangeCatcher(ImageController* controller)
     : controller(controller)
     , oldTags(controller->getTags())
     , oldImageAvailable(controller->imageAvailable())
+    , oldWillBePruned(controller->getWillBePruned())
 {
 }
 
@@ -95,6 +111,7 @@ ImageController::ChangeCatcher::~ChangeCatcher()
 {
     QStringList newTags = controller->getTags();
     bool newImageAvailable = controller->imageAvailable();
+    bool newWillBePruned = controller->getWillBePruned();
 
     if(oldTags != newTags)
     {
@@ -104,5 +121,10 @@ ImageController::ChangeCatcher::~ChangeCatcher()
     if(oldImageAvailable != newImageAvailable)
     {
         controller->emitImageAvailableChanged(newImageAvailable);
+    }
+
+    if(newWillBePruned != oldWillBePruned)
+    {
+        controller->emitWillBePrunedChanged(newWillBePruned);
     }
 }

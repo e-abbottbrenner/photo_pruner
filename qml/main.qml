@@ -18,6 +18,8 @@ ApplicationWindow {
 
     color: "white"
 
+    title: "Photo Pruner | " + appController.projectName
+
     Actions {
         id: actions
     }

@@ -25,6 +25,7 @@ class AppController : public QObject, public TopLevelController
 
     Q_PROPERTY(QAbstractItemModel* projectModel READ getRawProjectModel NOTIFY projectModelChanged)
     Q_PROPERTY(QUrl projectUrl READ getProjectUrl NOTIFY projectUrlChanged)
+    Q_PROPERTY(QString projectName READ getProjectName NOTIFY projectNameChanged)
 
     // moc is bad with enums so we have to express this as a property instead of a Q_INVOKABLE
     // it was fixed for properties in Qt 5.3: https://bugreports.qt-project.org/browse/QTBUG-33577
@@ -37,6 +38,7 @@ public:
 
     QAbstractItemModel* getRawProjectModel() const;
     QUrl getProjectUrl() const;
+    QString getProjectName() const;
 
     PruningFilter getPruningFilter() const;
     void setPruningFilter(PruningFilters::PruningFilter filter);
@@ -52,6 +54,7 @@ signals:
     void projectModelChanged(QAbstractItemModel* model);
     void projectUrlChanged(QUrl projectUrl);
     void pruningFilterChanged(PruningFilters::PruningFilter filter);
+    void projectNameChanged(QString projectName);
 
 private:
     void setProjectUrl(QUrl url);

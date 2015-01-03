@@ -5,6 +5,7 @@
 #include "Project.h"
 
 #include <QDebug>
+#include <QFileInfo>
 #include <QUrl>
 
 /*!
@@ -27,6 +28,11 @@ QAbstractItemModel* AppController::getRawProjectModel() const
 QUrl AppController::getProjectUrl() const
 {
     return currentProjectUrl;
+}
+
+QString AppController::getProjectName() const
+{
+    return currentProjectUrl.isEmpty()? "Unsaved Project" : QFileInfo(currentProjectUrl.toLocalFile()).baseName();
 }
 
 PruningFilter AppController::getPruningFilter() const
@@ -105,5 +111,7 @@ void AppController::setProjectUrl(QUrl url)
         currentProjectUrl = url;
 
         emit projectUrlChanged(url);
+
+        emit projectNameChanged(getProjectName());
     }
 }

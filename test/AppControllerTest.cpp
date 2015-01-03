@@ -31,6 +31,7 @@ TEST_F(AppControllerTest, testNewProject)
     ProjectPtr oldProj = appModel->getCurrentProject();
 
     QSignalSpy urlChangedSpy(controller.data(), SIGNAL(projectUrlChanged(QUrl)));
+    QSignalSpy nameChangedSpy(controller.data(), SIGNAL(projectNameChanged(QString)));
 
     controller->newProject();
 
@@ -38,6 +39,11 @@ TEST_F(AppControllerTest, testNewProject)
 
     EXPECT_EQ(QUrl(), urlChangedSpy[0][0].toUrl());
     EXPECT_EQ(QUrl(), controller->getProjectUrl());
+
+    ASSERT_EQ(1, nameChangedSpy.size());
+
+    EXPECT_EQ("Unsaved Project", nameChangedSpy[0][0].toString());
+    EXPECT_EQ(nameChangedSpy[0][0].toString(), controller->getProjectName());
 
     EXPECT_NE(oldProj, appModel->getCurrentProject());
 
@@ -50,6 +56,7 @@ TEST_F(AppControllerTest, testOpenProject)
     ProjectPtr oldProj = appModel->getCurrentProject();
 
     QSignalSpy urlChangedSpy(controller.data(), SIGNAL(projectUrlChanged(QUrl)));
+    QSignalSpy nameChangedSpy(controller.data(), SIGNAL(projectNameChanged(QString)));
 
     QString projectPath(QDir(RESOURCE_PATH).absoluteFilePath("projects/sampleproj.json"));
     QUrl projectUrl = QUrl::fromLocalFile(projectPath);
@@ -60,6 +67,11 @@ TEST_F(AppControllerTest, testOpenProject)
 
     EXPECT_EQ(projectUrl, urlChangedSpy[0][0].toUrl());
     EXPECT_EQ(projectUrl, controller->getProjectUrl());
+
+    ASSERT_EQ(1, nameChangedSpy.size());
+
+    EXPECT_EQ("sampleproj", nameChangedSpy[0][0].toString());
+    EXPECT_EQ(nameChangedSpy[0][0].toString(), controller->getProjectName());
 
     EXPECT_NE(oldProj, appModel->getCurrentProject());
 

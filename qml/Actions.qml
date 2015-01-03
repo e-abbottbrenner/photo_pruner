@@ -81,26 +81,25 @@ Item {
     }
 
     property Action flagForPruningAction: Action {
-        text: "&Prune Image"
+        text: "&Flag Image for Pruning"
         shortcut: "Ctrl+D"
 
-        enabled: imageController.hasImage
+        enabled: imageController.hasImage && !imageController.willBePruned
 
-        onTriggered: imageController.setWillBePruned(true)
+        onTriggered: imageController.willBePruned = true
     }
 
     property Action unflagForPruningAction: Action {
-        text: "&Keep Image"
-        shortcut: "Ctrl+K"
+        text: "&Unflag Image For Pruning"
+        shortcut: "Ctrl+U"
 
-        enabled: imageController.hasImage
+        enabled: imageController.hasImage && imageController.willBePruned
 
-        onTriggered: imageController.setWillBePruned(false);
+        onTriggered: imageController.willBePruned = false
     }
 
     property Action removeFromProjectAction: Action {
         text:"&Remove Image"
-        shortcut: "Ctrl+R"
 
         enabled: imageController.hasImage
 

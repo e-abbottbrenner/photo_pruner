@@ -41,13 +41,23 @@ TEST_F(ImageControllerTest, testSetWillBePruned)
 {
     EXPECT_FALSE(image->getWillBePruned());
 
+    QSignalSpy willBePrunedChangedSpy(controller.data(), SIGNAL(willBePrunedChanged(bool)));
+
     controller->setWillBePruned(true);
 
     EXPECT_TRUE(image->getWillBePruned());
 
+    ASSERT_EQ(1, willBePrunedChangedSpy.size());
+
+    EXPECT_EQ(true, willBePrunedChangedSpy[0][0].toBool());
+
     controller->setWillBePruned(false);
 
     EXPECT_FALSE(image->getWillBePruned());
+
+    ASSERT_EQ(2, willBePrunedChangedSpy.size());
+
+    EXPECT_FALSE(willBePrunedChangedSpy[1][0].toBool());
 }
 
 TEST_F(ImageControllerTest, testRemoveFromProject)
@@ -109,6 +119,7 @@ TEST_F(ImageControllerTest, testSetImage)
 
     QSignalSpy imageAvailableChanged(controller.data(), SIGNAL(imageAvailableChanged(bool)));
     QSignalSpy tagsChangedSpy(controller.data(), SIGNAL(tagsChanged(QStringList)));
+    QSignalSpy willBePrunedChangedSpy(controller.data(), SIGNAL(willBePrunedChanged(bool)));
 
     controller->setImage(QString());
 
@@ -121,6 +132,7 @@ TEST_F(ImageControllerTest, testSetImage)
 
     QString tag = "tag";
     image->addImageTag(tag);
+    image->setWillBePruned(true);
 
     controller->setImage(image->getImagePath());
 
@@ -133,4 +145,8 @@ TEST_F(ImageControllerTest, testSetImage)
     ASSERT_EQ(1, tagsChangedSpy.size());
 
     EXPECT_EQ(QStringList(tag), tagsChangedSpy[0][0].toStringList());
+
+    ASSERT_EQ(1, willBePrunedChangedSpy.size());
+
+    EXPECT_EQ(true, willBePrunedChangedSpy[0][0].toBool());
 }
