@@ -58,6 +58,7 @@ Dialog {
                             tagList.currentItem.blink()
                         } else {
                             imageController.addTag(newTagText.text)
+                            newTagText.text = ""
                         }
                     }
 

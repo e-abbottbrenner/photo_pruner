@@ -59,11 +59,11 @@ Rectangle {
     }
 
     function setRotationDirectionClockwise() {
-        image.rotationDirection = RotationAnimation.Clockwise
+        displayImage.rotationDirection = RotationAnimation.Clockwise
     }
 
     function setRotationDirectionCounterClockwise() {
-        image.rotationDirection = RotationAnimation.Counterclockwise
+        displayImage.rotationDirection = RotationAnimation.Counterclockwise
     }
 
     Connections {

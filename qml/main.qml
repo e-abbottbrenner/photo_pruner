@@ -73,20 +73,6 @@ ApplicationWindow {
         }
     }
 
-    toolBar: ToolBar {
-        RowLayout {
-            FontAwesomeButton { action: actions.newAction; text: "\uf016" } // fa-file-o
-            FontAwesomeButton { action: actions.openAction; text: "\uf115" } // fa-folder-open-o
-            FontAwesomeButton { action: actions.saveAction; text: "\uf0c7" } // fa-save
-            FontAwesomeButton { action: actions.importAction; text: "\uf1c5" } // fa-file-image-o
-            FontAwesomeButton { action: actions.deletePrunedImagesAction; text: "\uf014" } // fa-trash-o
-
-            Row {
-            }
-
-        }
-    }
-
     SplitView {
         id: viewingPanels
 
@@ -94,13 +80,57 @@ ApplicationWindow {
 
         anchors.fill: parent
 
-        ImageListPanel {
-            id: listPanel
+        handleDelegate: Component {
+            Item {
 
-            Layout.minimumWidth: minimumWidth
+            }
         }
 
         ColumnLayout {
+            spacing: 0
+
+            ToolBar {
+                Layout.fillWidth: true
+
+                RowLayout {
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    FontAwesomeButton { action: actions.newAction; text: "\uf016" } // fa-file-o
+                    FontAwesomeButton { action: actions.openAction; text: "\uf115" } // fa-folder-open-o
+                    FontAwesomeButton { action: actions.saveAction; text: "\uf0c7" } // fa-save
+                    FontAwesomeButton { action: actions.importAction; text: "\uf1c5" } // fa-file-image-o
+                    FontAwesomeButton { action: actions.deletePrunedImagesAction; text: "\uf014" } // fa-trash-o
+                }
+            }
+
+            ImageListPanel {
+                id: listPanel
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                Layout.minimumWidth: minimumWidth
+            }
+        }
+
+        ColumnLayout {
+            spacing: 0
+
+            ToolBar {
+                Layout.fillWidth: true
+
+                RowLayout {
+                    anchors.centerIn: parent
+
+                    FontAwesomeButton { action: actions.editTagsAction; text: "\uf02c" } // fa-tags
+                    FontAwesomeButton { action: actions.flagForPruningAction; text: "\uf024" } // fa-flag
+                    FontAwesomeButton { action: actions.unflagForPruningAction; text: "\uf11d" } //fa-flag-o
+                    FontAwesomeButton { action: actions.rotateCCW; text: "\uf0e2" } // fa-rotate-left
+                    FontAwesomeButton { action: actions.rotateCW; text: "\uf01e" } // fa-rotate-right
+                    FontAwesomeButton { action: actions.removeFromProjectAction; text: "\uf00d" } // fa-times
+                }
+            }
+
             ImagePreviewPanel {
                 id: previewPanel
 
@@ -118,21 +148,6 @@ ApplicationWindow {
 
                     onRotatingCW: previewPanel.setRotationDirectionClockwise()
                     onRotatingCCW: previewPanel.setRotationDirectionCounterClockwise()
-                }
-            }
-
-            ToolBar {
-                Layout.fillWidth: true
-
-                RowLayout {
-                    anchors.centerIn: parent
-
-                    FontAwesomeButton { action: actions.editTagsAction; text: "\uf02c" } // fa-tags
-                    FontAwesomeButton { action: actions.rotateCCW; text: "\uf0e2" } // fa-rotate-left
-                    FontAwesomeButton { action: actions.rotateCW; text: "\uf01e" } // fa-rotate-right
-                    FontAwesomeButton { action: actions.flagForPruningAction; text: "\uf024" } // fa-flag
-                    FontAwesomeButton { action: actions.unflagForPruningAction; text: "\uf11d" } //fa-flag-o
-                    FontAwesomeButton { action: actions.removeFromProjectAction; text: "\uf00d" } // fa-times
                 }
             }
         }
