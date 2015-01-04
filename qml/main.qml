@@ -73,21 +73,17 @@ ApplicationWindow {
         }
     }
 
-    SplitView {
+    RowLayout {
         id: viewingPanels
 
-        orientation: Qt.Horizontal
+        spacing: 0
 
         anchors.fill: parent
 
-        handleDelegate: Component {
-            Item {
-
-            }
-        }
-
         ColumnLayout {
             spacing: 0
+
+            Layout.fillWidth: false
 
             ToolBar {
                 Layout.fillWidth: true

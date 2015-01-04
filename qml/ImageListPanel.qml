@@ -111,10 +111,14 @@ Rectangle {
                             radius: 5
 
                             Text {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.fill: parent
+
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+
                                 color: pruned? "red" : "black"
                                 text: display
+                                elide: Text.ElideRight
 
                                 Behavior on color {
                                     PropertyAnimation { duration: 400; }
