@@ -8,5 +8,6 @@
         <file>qml/ImageListPanel.qml</file>
         <file>fonts/fontawesome-webfont.ttf</file>
         <file>qml/FontAwesomeButton.qml</file>
+        <file>qml/Spinner.qml</file>
     </qresource>
 </RCC>

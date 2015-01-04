@@ -5,4 +5,5 @@ DISTFILES += \
     $$PWD/PruningFilterComboBox.qml \
     $$PWD/TagEditorDialog.qml \
     $$PWD/ImageListPanel.qml \
-    $$PWD/FontAwesomeButton.qml
+    $$PWD/FontAwesomeButton.qml \
+    $$PWD/Spinner.qml

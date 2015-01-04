@@ -154,6 +154,8 @@ Item {
 
         enabled: imageController.hasImage
 
+        shortcut: "Ctrl+["
+
         onTriggered: {
             actions.rotatingCCW()
             imageController.rotation = imageController.rotation - 90
@@ -164,6 +166,8 @@ Item {
         text: "Rotate Clockwise"
 
         enabled: imageController.hasImage
+
+        shortcut: "Ctrl+]"
 
         onTriggered: {
             actions.rotatingCW()

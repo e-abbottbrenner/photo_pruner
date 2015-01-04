@@ -36,6 +36,10 @@ Button {
                     GradientStop { position: 0 ; color: control.pressed ? "#c0c8d0" : "#d0d8e8" }
                     GradientStop { position: 1 ; color: control.pressed ? "#a0a8b0" : "#c0c8d8" }
                 }
+
+                Behavior on border.color {
+                    PropertyAnimation { duration: 200 }
+                }
             }
         }
 
@@ -53,6 +57,10 @@ Button {
 
                 color: control.enabled? (control.pressed? control.pressedColor : control.unpressedColor)
                                       : control.disabledColor
+
+                Behavior on color {
+                    PropertyAnimation { duration: 200 }
+                }
             }
         }
     }

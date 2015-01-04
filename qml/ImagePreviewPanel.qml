@@ -140,6 +140,8 @@ Rectangle {
 
                 anchors.centerIn: parent
 
+                cache: true
+
                 width: sourceSize.width? sourceSize.width : previewPanel.width
                 height: sourceSize.height? sourceSize.height : previewPanel.height
 
@@ -151,7 +153,7 @@ Rectangle {
 
                 rotation: imageController.rotation
 
-                property var rotationDirection
+                property int rotationDirection: RotationAnimation.Clockwise
 
                 Behavior on rotation {
                     RotationAnimation {
@@ -173,5 +175,17 @@ Rectangle {
                 scale: initialFitScale * rotationFitScale
             }
         }
+    }
+
+    Spinner {
+        id: loadingSpinner
+
+        anchors.centerIn: parent
+
+        visible: imageController.hasImage && image.progress < 1.0
+
+        spinnerSize: 96
+
+        spinTime: 1000
     }
 }
