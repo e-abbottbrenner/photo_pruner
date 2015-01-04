@@ -6,10 +6,16 @@ import QtQuick.Layouts 1.1
 import PhotoPruner.Controllers 1.0
 
 Dialog {
+    id: tagEditorDialog
+
     property var tags: imageController.tags
 
     width: 240
     height: 240
+
+    onVisibleChanged: {
+        newTagText.forceActiveFocus()
+    }
 
     contentItem: Rectangle {
         color: "#d8d8d8"
@@ -27,10 +33,18 @@ Dialog {
                     Layout.fillWidth: true
                     Layout.fillHeight: false
 
+                    focus: true
+
                     anchors.verticalCenter: parent.verticalCenter
+
+                    Keys.onEnterPressed: addTagButton.addTag()
+                    Keys.onReturnPressed: addTagButton.addTag()
+                    Keys.onEscapePressed: tagEditorDialog.close()
                 }
 
                 Button {
+                    id: addTagButton
+
                     text: "Add Tag"
 
                     enabled: newTagText.text.length > 0
@@ -39,8 +53,16 @@ Dialog {
 
                     anchors.verticalCenter: parent.verticalCenter
 
+                    function addTag() {
+                        if(tags.indexOf(newTagText.text) >= 0) {
+                            tagList.currentItem.blink()
+                        } else {
+                            imageController.addTag(newTagText.text)
+                        }
+                    }
+
                     onClicked: {
-                        imageController.addTag(newTagText.text)
+                        addTag()
                     }
                 }
             }
@@ -48,6 +70,8 @@ Dialog {
             ListView {
                 id: tagList
                 model: tags
+
+                currentIndex: tags.indexOf(newTagText.text)
 
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -59,15 +83,60 @@ Dialog {
 
                 delegate: Component {
                     Item {
+                        id: tagDelegate
+
                         width: tagList.width
                         height: 20
 
+                        function blink() {
+                            blinkAnimation.start()
+                        }
+
                         Rectangle {
+                            id: tagRect
+
                             anchors.fill: parent
-                            color: "#c0c0c0"
+
+                            readonly property color highlightColor: "#ffc000"
+                            readonly property color normalColor: "#c0c0c0"
+
+                            color: tagDelegate.ListView.isCurrentItem? highlightColor : normalColor
                             radius: 5
 
                             property real fontSize: 10
+
+                            Behavior on color {
+                                ColorAnimation { duration: 1000; }
+                            }
+
+                            SequentialAnimation on color {
+                                id: blinkAnimation
+
+                                running: false
+
+                                readonly property int totalDuration: 2000
+                                readonly property int totalBlinks: 2
+
+                                loops: totalBlinks
+
+                                ColorAnimation {
+                                    from: tagRect.highlightColor
+                                    to: tagRect.normalColor
+
+                                    easing.type: Easing.InOutQuad
+
+                                    duration: blinkAnimation.totalDuration / (2 * blinkAnimation.totalBlinks)
+                                }
+
+                                ColorAnimation {
+                                    from: tagRect.normalColor
+                                    to: tagRect.highlightColor
+
+                                    easing.type: Easing.InOutQuad
+
+                                    duration: blinkAnimation.totalDuration / (2 * blinkAnimation.totalBlinks)
+                                }
+                            }
 
                             Text {
                                 anchors.verticalCenter: parent.verticalCenter
