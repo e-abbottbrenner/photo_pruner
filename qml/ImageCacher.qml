@@ -6,7 +6,7 @@ Item {
 
     // no more than 100 in cache to keep the element count down
     readonly property int maxImages: 100
-    readonly property int maxMegaPixels: 500
+    readonly property int maxMegaPixels: 200
 
     property var imagePaths: []
     property var imagePathPriorities: []

@@ -135,17 +135,6 @@ Rectangle {
 
             transform: scalingTransform
 
-            Image {
-                // this loads the image in a separate thread so that display can be switched instantly
-                id: loaderImage
-
-                visible: false
-
-                asynchronous: true
-
-                source: previewPanel.imageSource
-            }
-
             ImageCacher {
                 sourceImage: displayImage
             }
@@ -160,23 +149,7 @@ Rectangle {
 
                 asynchronous: true
 
-                Connections {
-                    target: loaderImage
-
-                    onProgressChanged: {
-                        if(progress == 1.0) {
-                            // load complete, set source
-                            displayImage.source = loaderImage.source
-                        }
-                    }
-
-                    onSourceChanged: {
-                        if(loaderImage.progress == 1.0) {
-                            // already loaded when it changed, set source
-                            displayImage.source = loaderImage.source
-                        }
-                    }
-                }
+                source: previewPanel.imageSource
 
                 fillMode: Image.PreserveAspectFit
 
@@ -211,7 +184,7 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        visible: imageController.hasImage && loaderImage.progress < 1.0
+        visible: imageController.hasImage && displayImage.status != Image.Ready
 
         spinnerSize: 48
 
