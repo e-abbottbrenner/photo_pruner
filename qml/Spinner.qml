@@ -6,6 +6,9 @@ Item {
     property int spinnerSize
     property real spinTime
 
+    property color color: "black"
+    property color outlineColor: "transparent"
+
     width: childrenRect.width
     height: childrenRect.height
 
@@ -19,8 +22,8 @@ Item {
         font.pixelSize: spinnerSize
 
         style: Text.Outline
-        color: "black"
-        styleColor: "gray"
+        color: spinner.color
+        styleColor: spinner.outlineColor
 
         text: "\uf110"
 
