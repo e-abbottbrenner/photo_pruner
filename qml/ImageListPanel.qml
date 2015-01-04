@@ -85,8 +85,6 @@ Rectangle {
 
                 clip: true
 
-                spacing: 2
-
                 boundsBehavior: Flickable.StopAtBounds
 
                 model: appController.projectModel
@@ -94,15 +92,19 @@ Rectangle {
 
                 delegate: Component {
                     Item {
+                        id: imageDelegate
+
                         property variant sourceModel: model
 
                         width: listView.width
-                        height: 20
+                        height: 24
 
                         Rectangle {
                             anchors.fill: parent
+                            anchors.topMargin: 2
+                            anchors.bottomMargin: 2
 
-                            color: "transparent"
+                            color: imageDelegate.ListView.isCurrentItem? "#b0b0d8" : "transparent"
                             border.color: "#c0c0c0"
                             border.width: 1
 
@@ -133,7 +135,6 @@ Rectangle {
                 }
 
                 highlightMoveDuration: 0
-                highlight: Rectangle { color: "#b0b0d8"; radius: 5 }
                 focus: false
 
                 readonly property int fadeDuration: 500
