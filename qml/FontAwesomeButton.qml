@@ -33,8 +33,8 @@ Button {
                 border.color: control.enabled? borderColor : disabledColor
                 radius: 4
                 gradient: Gradient {
-                    GradientStop { position: 0 ; color: control.pressed ? "#c0c8d0" : "#d0d8e8" }
-                    GradientStop { position: 1 ; color: control.pressed ? "#a0a8b0" : "#c0c8d8" }
+                    GradientStop { position: 0 ; color: control.pressed ? "#dddddd" : "#ffffff" }
+                    GradientStop { position: 1 ; color: control.pressed ? "#bbbbcc" : "#ddddff" }
                 }
 
                 Behavior on border.color {

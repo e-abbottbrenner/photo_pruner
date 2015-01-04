@@ -3,6 +3,8 @@ QT += gui widgets qml quick
 include(src/src.pri)
 include(qml/qml.pri)
 
+CONFIG += embed_manifest_exe
+
 INCLUDEPATH += $$PWD/include
 
 LIBS += -L$$PWD/lib
