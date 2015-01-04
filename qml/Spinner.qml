@@ -18,6 +18,10 @@ Item {
         font.family: fontAwesome.name
         font.pixelSize: spinnerSize
 
+        style: Text.Outline
+        color: "black"
+        styleColor: "gray"
+
         text: "\uf110"
 
         SequentialAnimation on rotation {

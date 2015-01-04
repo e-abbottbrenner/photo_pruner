@@ -136,20 +136,38 @@ Rectangle {
             transform: scalingTransform
 
             Image {
-                id: image
+                // this loads the image in a separate thread so that display can be switched instantly
+                id: loaderImage
+
+                visible: false
+
+                asynchronous: true
+
+                source: previewPanel.imageSource
+            }
+
+            Image {
+                id: displayImage
 
                 anchors.centerIn: parent
-
-                cache: true
 
                 width: sourceSize.width? sourceSize.width : previewPanel.width
                 height: sourceSize.height? sourceSize.height : previewPanel.height
 
                 asynchronous: true
 
-                fillMode: Image.PreserveAspectFit
+                Connections {
+                    target: loaderImage
 
-                source: previewPanel.imageSource
+                    onProgressChanged: {
+                        if(progress == 1.0) {
+                            // load complete, set source
+                            displayImage.source = loaderImage.source
+                        }
+                    }
+                }
+
+                fillMode: Image.PreserveAspectFit
 
                 rotation: imageController.rotation
 
@@ -158,7 +176,7 @@ Rectangle {
                 Behavior on rotation {
                     RotationAnimation {
                         duration: 200
-                        direction: image.rotationDirection
+                        direction: displayImage.rotationDirection
                     }
                 }
 
@@ -182,9 +200,9 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        visible: imageController.hasImage && image.progress < 1.0
+        visible: imageController.hasImage && loaderImage.progress < 1.0
 
-        spinnerSize: 96
+        spinnerSize: 48
 
         spinTime: 1000
     }
