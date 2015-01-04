@@ -135,34 +135,6 @@ Rectangle {
 
             transform: scalingTransform
 
-            // hacky shit that's only necessary because of https://bugreports.qt-project.org/browse/QTBUG-19507
-            Repeater {
-                id: imageCacher
-
-                // no more than 100 in cache to keep the element count down
-                readonly property int maxImages: 100
-
-                property var imagePaths: []
-
-                model: maxImages
-
-                Image {
-                    visible: false
-                    asynchronous: true
-                    cache: true
-
-                    source: index < imageCacher.imagePaths.length? imageCacher.imagePaths[index] : ""
-
-                    onSourceChanged: console.log("source", source)
-                }
-
-                onModelChanged: console.log("model", model)
-
-                onItemAdded: console.log("item added")
-
-                onImagePathsChanged: console.log("image paths changed")
-            }
-
             Image {
                 // this loads the image in a separate thread so that display can be switched instantly
                 id: loaderImage
@@ -172,25 +144,10 @@ Rectangle {
                 asynchronous: true
 
                 source: previewPanel.imageSource
+            }
 
-                onProgressChanged: {
-                    if(progress == 1.0) {
-                        var imagePaths = imageCacher.imagePaths
-
-                        if(imagePaths.indexOf(source) < 0)
-                        {
-                            imagePaths.push(source)
-                            console.log("added image")
-                            console.log(imagePaths)
-                        }
-
-                        while(imagePaths.length > imageCacher.maxImages) {
-                            imagePaths.shift()
-                        }
-
-                        imageCacher.imagePaths = imagePaths
-                    }
-                }
+            ImageCacher {
+                sourceImage: displayImage
             }
 
             Image {
@@ -209,14 +166,13 @@ Rectangle {
                     onProgressChanged: {
                         if(progress == 1.0) {
                             // load complete, set source
-                            console.log("load complete")
                             displayImage.source = loaderImage.source
                         }
                     }
 
                     onSourceChanged: {
                         if(loaderImage.progress == 1.0) {
-                            console.log("load cached")
+                            // already loaded when it changed, set source
                             displayImage.source = loaderImage.source
                         }
                     }

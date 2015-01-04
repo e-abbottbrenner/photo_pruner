@@ -6,4 +6,5 @@ DISTFILES += \
     $$PWD/TagEditorDialog.qml \
     $$PWD/ImageListPanel.qml \
     $$PWD/FontAwesomeButton.qml \
-    $$PWD/Spinner.qml
+    $$PWD/Spinner.qml \
+    $$PWD/ImageCacher.qml

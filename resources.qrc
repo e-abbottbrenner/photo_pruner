@@ -9,5 +9,6 @@
         <file>fonts/fontawesome-webfont.ttf</file>
         <file>qml/FontAwesomeButton.qml</file>
         <file>qml/Spinner.qml</file>
+        <file>qml/ImageCacher.qml</file>
     </qresource>
 </RCC>
