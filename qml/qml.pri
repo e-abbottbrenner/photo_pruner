@@ -7,4 +7,5 @@ DISTFILES += \
     $$PWD/ImageListPanel.qml \
     $$PWD/FontAwesomeButton.qml \
     $$PWD/Spinner.qml \
-    $$PWD/ImageCacher.qml
+    $$PWD/ImageCacher.qml \
+    $$PWD/AnimatedListView.qml

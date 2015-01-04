@@ -107,7 +107,7 @@ Dialog {
                             property real fontSize: 10
 
                             Behavior on color {
-                                ColorAnimation { duration: 1000; }
+                                ColorAnimation { duration: 1000; easing.type: Easing.InQuad }
                             }
 
                             SequentialAnimation on color {

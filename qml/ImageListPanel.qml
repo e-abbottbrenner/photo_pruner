@@ -9,11 +9,11 @@ Rectangle {
 
     property int minimumWidth: filterControlsRow.width + mainColumn.anchors.leftMargin + mainColumn.anchors.rightMargin
 
-    property url currentImageUrl: listView.currentItem? listView.currentItem.sourceModel?
-                                                            listView.currentItem.sourceModel.sourceUrl : "" : ""
+    property url currentImageUrl: imageListView.currentItem? imageListView.currentItem.sourceModel?
+                                                            imageListView.currentItem.sourceModel.sourceUrl : "" : ""
 
-    property string currentImagePath:  listView.currentItem? listView.currentItem.sourceModel?
-                                                                 listView.currentItem.sourceModel.sourcePath : "" : ""
+    property string currentImagePath:  imageListView.currentItem? imageListView.currentItem.sourceModel?
+                                                                 imageListView.currentItem.sourceModel.sourcePath : "" : ""
 
     color: "#c8c8c8"
 
@@ -66,7 +66,7 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            contentItem: listView
+            contentItem: imageListView
 
             frameVisible: false
 
@@ -75,13 +75,13 @@ Rectangle {
 
             focus: true
 
-            Keys.onRightPressed: listView.incrementCurrentIndex()
-            Keys.onLeftPressed: listView.decrementCurrentIndex()
-            Keys.onUpPressed: listView.decrementCurrentIndex()
-            Keys.onDownPressed: listView.incrementCurrentIndex()
+            Keys.onRightPressed: imageListView.incrementCurrentIndex()
+            Keys.onLeftPressed: imageListView.decrementCurrentIndex()
+            Keys.onUpPressed: imageListView.decrementCurrentIndex()
+            Keys.onDownPressed: imageListView.incrementCurrentIndex()
 
-            ListView {
-                id: listView
+            AnimatedListView {
+                id: imageListView
 
                 clip: true
 
@@ -96,7 +96,7 @@ Rectangle {
 
                         property variant sourceModel: model
 
-                        width: listView.width
+                        width: imageListView.width
                         height: 24
 
                         Rectangle {
@@ -126,7 +126,7 @@ Rectangle {
                             anchors.fill: parent
 
                             onClicked: {
-                                listView.currentIndex = index
+                                imageListView.currentIndex = index
                                 imageListScrollView.forceActiveFocus()
 
                             }
@@ -136,48 +136,6 @@ Rectangle {
 
                 highlightMoveDuration: 0
                 focus: false
-
-                readonly property int fadeDuration: 500
-                readonly property int moveDuration: 250
-
-                populate: Transition {
-                    NumberAnimation {
-                        properties: "opacity"
-                        from: 0.0
-                        to: 1.0
-                        easing.type: Easing.InQuad
-                        duration: listView.fadeDuration
-                    }
-                }
-
-
-                add: Transition {
-                    NumberAnimation {
-                        properties: "opacity"
-                        from: 0.0
-                        to: 1.0
-                        easing.type: Easing.InQuad
-                        duration: listView.fadeDuration
-                    }
-                }
-
-                remove: Transition {
-                    NumberAnimation {
-                        properties: "opacity"
-                        from: 1.0
-                        to: 0.0
-                        easing.type: Easing.OutQuart
-                        duration: listView.fadeDuration
-                    }
-                }
-
-                addDisplaced: Transition {
-                    NumberAnimation { properties: "x,y"; duration: listView.moveDuration }
-                }
-
-                removeDisplaced: Transition {
-                    NumberAnimation { properties: "x,y"; duration: listView.moveDuration }
-                }
             }
         }
     }

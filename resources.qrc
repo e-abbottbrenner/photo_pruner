@@ -10,5 +10,6 @@
         <file>qml/FontAwesomeButton.qml</file>
         <file>qml/Spinner.qml</file>
         <file>qml/ImageCacher.qml</file>
+        <file>qml/AnimatedListView.qml</file>
     </qresource>
 </RCC>
