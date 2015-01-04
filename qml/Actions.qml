@@ -146,12 +146,18 @@ Item {
         }
     }
 
+    signal rotatingCW()
+    signal rotatingCCW()
+
     property Action rotateCCW : Action {
         text: "Rotate Counterclockwise"
 
         enabled: imageController.hasImage
 
-        onTriggered: imageController.rotation = imageController.rotation - 90
+        onTriggered: {
+            actions.rotatingCCW()
+            imageController.rotation = imageController.rotation - 90
+        }
     }
 
     property Action rotateCW : Action {
@@ -159,7 +165,10 @@ Item {
 
         enabled: imageController.hasImage
 
-        onTriggered: imageController.rotation = imageController.rotation + 90
+        onTriggered: {
+            actions.rotatingCW()
+            imageController.rotation = imageController.rotation + 90
+        }
     }
 
     signal resetZoomRequested()

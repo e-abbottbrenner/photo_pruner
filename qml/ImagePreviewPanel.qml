@@ -58,6 +58,14 @@ Rectangle {
         flickArea.returnToBounds()
     }
 
+    function setRotationDirectionClockwise() {
+        image.rotationDirection = RotationAnimation.Clockwise
+    }
+
+    function setRotationDirectionCounterClockwise() {
+        image.rotationDirection = RotationAnimation.Counterclockwise
+    }
+
     Connections {
         target: appController
 
@@ -142,6 +150,15 @@ Rectangle {
                 source: previewPanel.imageSource
 
                 rotation: imageController.rotation
+
+                property var rotationDirection
+
+                Behavior on rotation {
+                    RotationAnimation {
+                        duration: 200
+                        direction: image.rotationDirection
+                    }
+                }
 
                 // we're guaranteed an even multiple of 90
                 property real rotatedWidth: imageController.rotation % 180 == 0? width: height

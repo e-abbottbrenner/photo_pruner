@@ -113,6 +113,10 @@ Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: pruned? "red" : "black"
                                 text: display
+
+                                Behavior on color {
+                                    PropertyAnimation { duration: 400; }
+                                }
                             }
                         }
 

@@ -115,6 +115,9 @@ ApplicationWindow {
                     onResetZoomRequested: previewPanel.resetZoom()
                     onZoomInRequested: previewPanel.zoomIn()
                     onZoomOutRequested: previewPanel.zoomOut()
+
+                    onRotatingCW: previewPanel.setRotationDirectionClockwise()
+                    onRotatingCCW: previewPanel.setRotationDirectionCounterClockwise()
                 }
             }
 
